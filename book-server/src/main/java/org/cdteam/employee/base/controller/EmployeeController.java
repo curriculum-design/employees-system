@@ -3,13 +3,22 @@ package org.cdteam.employee.base.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.cdteam.employee.base.dto.EmployeeCreateDTO;
+import org.cdteam.employee.base.dto.EmployeeUploadDTO;
+import org.cdteam.spring.cloud.starter.common.utils.BeanCopyUtils;
 import org.cdteam.spring.cloud.starter.context.bean.Pagination;
 import org.cdteam.employee.base.dto.EmployeeDTO;
 import org.cdteam.employee.base.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Locale;
 
 @Slf4j
 @Api(value = "人员管理", tags = "[基础模块]人员管理")
@@ -23,19 +32,39 @@ public class EmployeeController {
     @ApiOperation("获取人员列表")
     @GetMapping("/list")
     public Pagination<EmployeeDTO> info(Integer pageSize, @RequestParam(defaultValue = "1") Integer pageNum
-            , Long typeId, Long publisherId, String code, String name) {
-        return employeeService.page(pageSize, pageNum, typeId, publisherId, code, name);
+            , String employeeCode, String realName) {
+        return employeeService.page(pageSize, pageNum, employeeCode, realName);
+    }
+
+    @ApiOperation("新增人员")
+    @PostMapping("/upload-save")
+    public Integer uploadSave(@RequestBody EmployeeUploadDTO employeeDTO) {
+        String joinTime = employeeDTO.getJoinTime();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault());
+
+        LocalDate localDate;
+        try {
+            localDate = LocalDate.parse(joinTime, formatter);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw e ;
+        }
+
+        EmployeeCreateDTO employeeCreateDTO = BeanCopyUtils.transferBean(employeeDTO, EmployeeCreateDTO.class);
+        employeeCreateDTO.setJoinTime(LocalDateTime.of(localDate, LocalTime.MIN));
+        return employeeService.uploadSave(employeeCreateDTO);
     }
 
     @ApiOperation("新增人员")
     @PostMapping("/save")
-    public Integer save(@RequestBody EmployeeDTO employeeDTO) {
+    public Integer save(@RequestBody EmployeeCreateDTO employeeDTO) {
         return employeeService.save(employeeDTO);
     }
 
     @ApiOperation("修改人员")
     @PutMapping("/update")
-    public Integer update(@RequestBody EmployeeDTO employeeDTO) {
+    public Integer update(@RequestBody EmployeeCreateDTO employeeDTO) {
         return save(employeeDTO);
     }
 

@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.cdteam.employee.base.domain.EmployeeEntity;
+import org.cdteam.employee.base.dto.EmployeeCreateDTO;
 import org.cdteam.employee.base.dto.EmployeeDTO;
+import org.cdteam.employee.base.dto.EmployeeUploadDTO;
 import org.cdteam.spring.cloud.starter.common.utils.BeanCopyUtils;
 import org.cdteam.spring.cloud.starter.common.utils.ListUtils;
 import org.cdteam.spring.cloud.starter.context.bean.Pagination;
@@ -35,13 +37,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     private EmployeeMapper mapper;
 
     @Override
-    public Pagination<EmployeeDTO> page(Integer pageSize, Integer pageNum, Long typeId, Long publisherId, String code, String name) {
+    public Pagination<EmployeeDTO> page(Integer pageSize, Integer pageNum, String employeeCode, String realName) {
         Page<EmployeeEntity> page = new Page<>();
         page.setCurrent(pageNum);
         page.setSize(pageSize);
         LambdaQueryWrapper<EmployeeEntity> queryWrapper = Wrappers.lambdaQuery();
-        if (StringUtils.isNotBlank(name)) {
-            queryWrapper.like(EmployeeEntity::getRealName, name);
+        if (StringUtils.isNotBlank(employeeCode)) {
+            queryWrapper.like(EmployeeEntity::getEmployeeCode, employeeCode);
+        }
+        if (StringUtils.isNotBlank(realName)) {
+            queryWrapper.like(EmployeeEntity::getRealName, realName);
         }
         IPage<EmployeeEntity> employeeEntityIPage = mapper.selectPage(page, queryWrapper);
         List<EmployeeEntity> records = employeeEntityIPage.getRecords();
@@ -51,7 +56,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Integer save(EmployeeDTO employeeDTO) {
+    public Integer save(EmployeeCreateDTO employeeDTO) {
         if (isExistByName(employeeDTO.getRealName(), employeeDTO.getId())) {
             throw new AppException(ResponseCodeEnum.COMMON_EXCEPTION, "姓名已存在");
         }
@@ -66,6 +71,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public Integer uploadSave(EmployeeCreateDTO employeeDTO) {
+        EmployeeEntity entity = mapper.selectOne(Wrappers.<EmployeeEntity>lambdaQuery()
+                .eq(EmployeeEntity::getEmployeeCode, employeeDTO.getEmployeeCode()));
+        if(entity != null){
+            employeeDTO.setId(entity.getId());
+        }
+        return save(employeeDTO);
+    }
+
+    @Override
     public Integer delete(Long id) {
         return mapper.deleteById(id);
     }
@@ -73,8 +88,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<EmployeeDTO> list() {
         List<EmployeeEntity> records = mapper.selectList(Wrappers.emptyWrapper());
-        List<EmployeeDTO> employeeDTOS = ListUtils.transferList(records, EmployeeDTO.class);
-        return employeeDTOS;
+        return ListUtils.transferList(records, EmployeeDTO.class);
     }
 
     @Override
@@ -83,6 +97,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         return BeanCopyUtils.transferBean(entity, EmployeeDTO.class);
     }
 
+
     private boolean isExistByName(String name, Long id) {
         LambdaQueryWrapper<EmployeeEntity> queryWrapper = Wrappers.<EmployeeEntity>lambdaQuery().eq(EmployeeEntity::getRealName, name);
         if (Objects.nonNull(id)) {
@@ -90,6 +105,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         return mapper.selectCount(queryWrapper) > 0;
     }
+
     private boolean isExistByCode(String code, Long id) {
         LambdaQueryWrapper<EmployeeEntity> queryWrapper = Wrappers.<EmployeeEntity>lambdaQuery().eq(EmployeeEntity::getRealName, code);
         if (Objects.nonNull(id)) {

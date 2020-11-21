@@ -32,7 +32,7 @@ public class EmployeeEntity implements Serializable {
      * ID
      */
     @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     /**
      * 人员编码
@@ -90,7 +90,7 @@ public class EmployeeEntity implements Serializable {
      * 是否删除
      */
     @TableLogic
-    private Long isDel;
+    private Boolean isDel;
 
 
 }

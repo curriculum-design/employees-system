@@ -1,6 +1,8 @@
 package org.cdteam.employee.base.service;
 
+import org.cdteam.employee.base.dto.EmployeeCreateDTO;
 import org.cdteam.employee.base.dto.EmployeeDTO;
+import org.cdteam.employee.base.dto.EmployeeUploadDTO;
 import org.cdteam.spring.cloud.starter.context.bean.Pagination;
 
 import java.util.List;
@@ -15,13 +17,15 @@ import java.util.List;
  */
 public interface EmployeeService {
 
-    Pagination<EmployeeDTO> page(Integer pageSize, Integer pageNum, Long typeId, Long publisherId, String code, String name);
+    Pagination<EmployeeDTO> page(Integer pageSize, Integer pageNum, String employeeCode, String realName);
 
-    Integer save(EmployeeDTO employeeDTO);
+    Integer save(EmployeeCreateDTO employeeDTO);
 
     Integer delete(Long id);
 
     List<EmployeeDTO> list();
 
     EmployeeDTO getById(Long id);
+
+    Integer uploadSave(EmployeeCreateDTO employeeDTO);
 }

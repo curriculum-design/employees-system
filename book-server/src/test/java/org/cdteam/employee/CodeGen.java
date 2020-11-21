@@ -15,7 +15,7 @@ public class CodeGen {
 
     public static void main(String[] args) throws Exception {
         String userDir = System.getProperty("user.dir");
-        System.setProperty("user.dir", "C:\\vanruiproject\\books-erp-system\\book-server");
+        System.setProperty("user.dir", "/Users/slin/Desktop/curriculum-design/employees-system/book-server");
         CodeGenerator cg = buildSystemGenerate();
         cg.generate();
     }
@@ -41,8 +41,8 @@ public class CodeGen {
 
             @Override
             public Map<String, Set<FileType>> recoveryTables() {
-                return ImmutableMap.of();
-//                return ImmutableMap.of("base_supplier", ImmutableSet.of(FileType.ENTITY, FileType.MAPPER, FileType.XML));
+//                return ImmutableMap.of();
+                return ImmutableMap.of("base_employee", ImmutableSet.of(FileType.ENTITY, FileType.MAPPER, FileType.XML));
             }
 
             @Override

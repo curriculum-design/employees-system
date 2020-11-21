@@ -26,12 +26,12 @@ export default {
                     let page = Math.floor((this.total + pageSize - 1) / pageSize)
                     let allData = []
                     for (let i = 0; i < page; i++) {
-                        const {data} = await this.api({
+                        const {list} = await this.api({
                             ...this.filter,
                             pageSize,
                             pageNum: i + 1,
                         })
-                        allData = [...allData, ...data]
+                        allData = [...allData, ...list]
                     }
                     await ExcelUtils.jsonExportPromise(allData, this.options)
                 }
