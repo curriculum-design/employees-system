@@ -3,7 +3,7 @@ el-dialog(title="编辑", :visible.sync="dialogShow", :close-on-click-modal="fal
     el-form(v-model="form" @submit.prevent.native="submitHandler()" label-width="80px")
         el-form-item(label="工号" )
             el-input(v-model="form.employeeCode")
-        el-form-item(label="中文名称")
+        el-form-item(label="中文名")
             el-input(v-model="form.realName")
         el-form-item(label="是否在职")
             el-input(v-model="form.onJob")

@@ -17,3 +17,5 @@ Vue.prototype.$erpThirdStorageService = require('./ErpThirdStorageService.js').d
 Vue.prototype.$sysInitTemplateService = require('./SysInitTemplateService.js').default
 Vue.prototype.$sysUserService = require('./SysUserService.js').default
 Vue.prototype.$baseEmployeeService = require('./BaseEmployeeService.js').default
+Vue.prototype.$baseTrainRecordService = require('./BaseTrainRecordService.js').default
+Vue.prototype.$baseTrainPlanService = require('./BaseTrainPlanService.js').default

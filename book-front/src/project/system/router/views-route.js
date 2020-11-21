@@ -25,3 +25,15 @@ views.push({
     name: 'base-employee',
     component: require('../views/base-employee')
 })
+
+views.push({
+    path: '/base-train-record',
+    name: 'base-train-record',
+    component: require('../views/base-train-record')
+})
+
+views.push({
+    path: '/base-train-plan',
+    name: 'base-train-plan',
+    component: require('../views/base-train-plan')
+})

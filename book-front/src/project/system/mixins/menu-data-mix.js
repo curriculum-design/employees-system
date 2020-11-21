@@ -58,7 +58,19 @@ export default {
         async getTreeData() {
             this.menus = [{
                 'id': '1',
-                'menuName': '员工管理',
+                'menuName': '员工信息',
+                'url': 'base-employee',
+            }, {
+                'id': '2',
+                'menuName': '员工培训计划',
+                'url': 'base-train-plan',
+            }, {
+                'id': '3',
+                'menuName': '员工培训记录',
+                'url': 'base-train-record',
+            }, {
+                'id': '4',
+                'menuName': '员工上岗证',
                 'url': 'base-employee',
             }]
         },

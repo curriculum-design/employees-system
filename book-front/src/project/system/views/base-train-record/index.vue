@@ -1,11 +1,15 @@
 <template lang="pug">
-    ContentBody(title="员工列表")
+    ContentBody(title="员工培训记录")
         template(slot="filter")
             el-form(:inline="true", v-model="form" @submit.prevent.native="filter(form)")
                 el-form-item(label="工号")
                     el-input(v-model="form.employeeCode")
-                el-form-item(label="中文名称")
+                el-form-item(label="中文名")
                     el-input(v-model="form.realName")
+                el-form-item(label="课程名称")
+                    el-input(v-model="form.courseName")
+                el-form-item(label="讲师")
+                    el-input(v-model="form.teacherName")
                 el-form-item
                     el-button(type="primary", native-type="submit") 查询
                     el-button(type="success" @click="handleEdit()") 新增
@@ -29,19 +33,23 @@ import {mapGetters} from 'vuex'
 import EditForm from './form'
 export default {
     components: {EditForm},
-    mixins: [CurdTableMix('$baseEmployeeService')],
+    mixins: [CurdTableMix('$baseTrainRecordService')],
     data() {
         return {
             editForm: {
                 id: '',
-                employeeCode: '',
-                realName: '',
-                onJob: '',
-                workType: '',
-                org: '',
-                dept: '',
-                jobName: '',
-                joinTime: '',
+                employeeId: '',
+                courseName: '',
+                trainStyle: '',
+                makeCourse: '',
+                beginTime: '',
+                endTime: '',
+                classHour: '',
+                teacherId: '',
+                teacherName: '',
+                rate: '',
+                score: '',
+                remark: '',
                 createTime: '',
                 updateTime: '',
                 isDel: '',
@@ -69,27 +77,40 @@ export default {
                 realName: {
                     label: '中文名'
                 },
-                onJob: {
-                    label: '是否在职'
+                courseName: {
+                    label: '课程名称'
                 },
-                workType: {
-                    label: '工种'
+                trainStyle: {
+                    label: '培训形式'
                 },
-                org: {
-                    label: '机构'
+                makeCourse: {
+                    label: '开设部门/机构'
                 },
-                dept: {
-                    label: '部门'
-                },
-                jobName: {
-                    label: '岗位'
-                },
-                joinTime: {
-                    label: '入职时间',
+                beginTime: {
+                    label: '开课时间',
                     format: (t) => this.$format.date(t, 'yyyy-mm-dd')
                 },
+                endTime: {
+                    label: '完成时间',
+                    format: (t) => this.$format.date(t, 'yyyy-mm-dd')
+                },
+                classHour: {
+                    label: '课时'
+                },
+                teacherName: {
+                    label: '讲师'
+                },
+                rate: {
+                    label: '课程满意度'
+                },
+                score: {
+                    label: '考核成绩'
+                },
+                remark: {
+                    label: '备注'
+                },
                 createTime: {
-                    label: '新增时间',
+                    label: '创建时间',
                     format: (t) => this.$format.date(t, 'yyyy-mm-dd')
                 },
                 updateTime: {
@@ -106,14 +127,17 @@ export default {
         importOptions() {
             return {
                 headerMapping: {
-                    '人员编码': 'employeeCode',
-                    '中文名称': 'realName',
-                    '是否在职': 'onJob',
-                    '工种': 'workType',
-                    '机构': 'org',
-                    '部门': 'dept',
-                    '岗位': 'jobName',
-                    '入职时间': 'joinTime'
+                    '工号': 'employeeCode',
+                    '课程名称': 'courseName',
+                    '培训形式': 'trainStyle',
+                    '开设部门/机构': 'makeCourse',
+                    '开课时间': 'beginTime',
+                    '完成时间': 'endTime',
+                    '课时': 'classHour',
+                    '讲师': 'teacherName',
+                    '课程满意度': 'rate',
+                    '考核成绩': 'score',
+                    '备注': 'remark'
                 }
             }
         }
