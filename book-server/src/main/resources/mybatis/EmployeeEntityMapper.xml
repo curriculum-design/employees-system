@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cdteam.employee.base.mapper.EmployeeMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.cdteam.employee.base.domain.EmployeeEntity">
+        <id column="id" property="id" />
+        <result column="employee_code" property="employeeCode" />
+        <result column="real_name" property="realName" />
+        <result column="on_job" property="onJob" />
+        <result column="work_type" property="workType" />
+        <result column="org" property="org" />
+        <result column="dept" property="dept" />
+        <result column="job_name" property="jobName" />
+        <result column="join_time" property="joinTime" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="is_del" property="isDel" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, employee_code, real_name, on_job, work_type, org, dept, job_name, join_time, create_time, update_time, is_del
+    </sql>
+
+</mapper>

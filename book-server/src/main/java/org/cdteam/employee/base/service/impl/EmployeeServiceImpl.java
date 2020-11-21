@@ -1,0 +1,100 @@
+package org.cdteam.employee.base.service.impl;
+
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.apache.commons.lang3.StringUtils;
+import org.cdteam.employee.base.domain.EmployeeEntity;
+import org.cdteam.employee.base.dto.EmployeeDTO;
+import org.cdteam.spring.cloud.starter.common.utils.BeanCopyUtils;
+import org.cdteam.spring.cloud.starter.common.utils.ListUtils;
+import org.cdteam.spring.cloud.starter.context.bean.Pagination;
+import org.cdteam.spring.cloud.starter.context.constant.ResponseCodeEnum;
+import org.cdteam.spring.cloud.starter.context.exception.AppException;
+import org.cdteam.employee.base.mapper.EmployeeMapper;
+import org.cdteam.employee.base.service.EmployeeService;
+import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+import java.util.Objects;
+
+/**
+ * <p>
+ * 服务实现类
+ * </p>
+ *
+ * @author lesl
+ * @since 2020-11-11
+ */
+@Service
+public class EmployeeServiceImpl implements EmployeeService {
+
+    @Autowired
+    private EmployeeMapper mapper;
+
+    @Override
+    public Pagination<EmployeeDTO> page(Integer pageSize, Integer pageNum, Long typeId, Long publisherId, String code, String name) {
+        Page<EmployeeEntity> page = new Page<>();
+        page.setCurrent(pageNum);
+        page.setSize(pageSize);
+        LambdaQueryWrapper<EmployeeEntity> queryWrapper = Wrappers.lambdaQuery();
+        if (StringUtils.isNotBlank(name)) {
+            queryWrapper.like(EmployeeEntity::getRealName, name);
+        }
+        IPage<EmployeeEntity> employeeEntityIPage = mapper.selectPage(page, queryWrapper);
+        List<EmployeeEntity> records = employeeEntityIPage.getRecords();
+        List<EmployeeDTO> employeeDTOS = ListUtils.transferList(records, EmployeeDTO.class);
+        Pagination<EmployeeDTO> result = new Pagination<>(pageNum, pageSize, employeeEntityIPage.getTotal(), employeeDTOS);
+        return result;
+    }
+
+    @Override
+    public Integer save(EmployeeDTO employeeDTO) {
+        if (isExistByName(employeeDTO.getRealName(), employeeDTO.getId())) {
+            throw new AppException(ResponseCodeEnum.COMMON_EXCEPTION, "姓名已存在");
+        }
+        if (isExistByCode(employeeDTO.getEmployeeCode(), employeeDTO.getId())) {
+            throw new AppException(ResponseCodeEnum.COMMON_EXCEPTION, "编号已存在");
+        }
+        EmployeeEntity employeeEntity = BeanCopyUtils.transferBean(employeeDTO, EmployeeEntity.class);
+        if (employeeDTO.getId() == null) {
+            return mapper.insert(employeeEntity);
+        }
+        return mapper.updateById(employeeEntity);
+    }
+
+    @Override
+    public Integer delete(Long id) {
+        return mapper.deleteById(id);
+    }
+
+    @Override
+    public List<EmployeeDTO> list() {
+        List<EmployeeEntity> records = mapper.selectList(Wrappers.emptyWrapper());
+        List<EmployeeDTO> employeeDTOS = ListUtils.transferList(records, EmployeeDTO.class);
+        return employeeDTOS;
+    }
+
+    @Override
+    public EmployeeDTO getById(Long id) {
+        EmployeeEntity entity = mapper.selectById(id);
+        return BeanCopyUtils.transferBean(entity, EmployeeDTO.class);
+    }
+
+    private boolean isExistByName(String name, Long id) {
+        LambdaQueryWrapper<EmployeeEntity> queryWrapper = Wrappers.<EmployeeEntity>lambdaQuery().eq(EmployeeEntity::getRealName, name);
+        if (Objects.nonNull(id)) {
+            queryWrapper.ne(EmployeeEntity::getId, id);
+        }
+        return mapper.selectCount(queryWrapper) > 0;
+    }
+    private boolean isExistByCode(String code, Long id) {
+        LambdaQueryWrapper<EmployeeEntity> queryWrapper = Wrappers.<EmployeeEntity>lambdaQuery().eq(EmployeeEntity::getRealName, code);
+        if (Objects.nonNull(id)) {
+            queryWrapper.ne(EmployeeEntity::getId, id);
+        }
+        return mapper.selectCount(queryWrapper) > 0;
+    }
+}
