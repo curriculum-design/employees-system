@@ -1,5 +1,6 @@
 package org.cdteam.employee.base.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -78,6 +79,18 @@ public class EmployeeServiceImpl implements EmployeeService {
             employeeDTO.setId(entity.getId());
         }
         return save(employeeDTO);
+    }
+
+    @Override
+    public List<EmployeeDTO> all() {
+        List<EmployeeEntity> employeeEntities = mapper.selectList(Wrappers.emptyWrapper());
+        return ListUtils.transferList(employeeEntities, EmployeeDTO.class);
+    }
+
+    @Override
+    public EmployeeDTO getByCode(String employeeCode) {
+        EmployeeEntity employeeEntity = mapper.selectOne(Wrappers.<EmployeeEntity>lambdaQuery().eq(EmployeeEntity::getEmployeeCode, employeeCode));
+        return BeanCopyUtils.transferBean(employeeEntity, EmployeeDTO.class);
     }
 
     @Override

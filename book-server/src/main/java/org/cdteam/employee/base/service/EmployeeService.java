@@ -28,4 +28,8 @@ public interface EmployeeService {
     EmployeeDTO getById(Long id);
 
     Integer uploadSave(EmployeeCreateDTO employeeDTO);
+
+    List<EmployeeDTO> all();
+
+    EmployeeDTO getByCode(String employeeCode);
 }

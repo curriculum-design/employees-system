@@ -30,7 +30,7 @@ public class CodeGen {
             @Override
             public String[] tableNames() {
                 return new String[]{
-                        "base_employee"
+                        "base_train_record"
                 };
             }
 
@@ -41,8 +41,8 @@ public class CodeGen {
 
             @Override
             public Map<String, Set<FileType>> recoveryTables() {
-//                return ImmutableMap.of();
-                return ImmutableMap.of("base_employee", ImmutableSet.of(FileType.ENTITY, FileType.MAPPER, FileType.XML));
+                return ImmutableMap.of();
+//                return ImmutableMap.of("base_employee", ImmutableSet.of(FileType.ENTITY, FileType.MAPPER, FileType.XML));
             }
 
             @Override

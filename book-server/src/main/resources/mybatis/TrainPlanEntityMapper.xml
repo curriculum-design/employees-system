@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.cdteam.employee.base.mapper.TrainPlanMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.cdteam.employee.base.domain.TrainPlanEntity">
+        <id column="id" property="id" />
+        <result column="employee_id" property="employeeId" />
+        <result column="course_name" property="courseName" />
+        <result column="train_style" property="trainStyle" />
+        <result column="make_course" property="makeCourse" />
+        <result column="begin_time" property="beginTime" />
+        <result column="class_hour" property="classHour" />
+        <result column="remark" property="remark" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="is_del" property="isDel" />
+    </resultMap>
+
+    <resultMap id="UnionResultMap" type="org.cdteam.employee.base.dobject.TrainPlanUnionDO">
+        <id column="id" property="id" />
+        <result column="employee_id" property="employeeId" />
+        <result column="course_name" property="courseName" />
+        <result column="train_style" property="trainStyle" />
+        <result column="make_course" property="makeCourse" />
+        <result column="begin_time" property="beginTime" />
+        <result column="class_hour" property="classHour" />
+        <result column="remark" property="remark" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="is_del" property="isDel" />
+
+        <result column="employee_code" property="employeeCode" />
+        <result column="real_name" property="realName" />
+        <result column="on_job" property="onJob" />
+        <result column="work_type" property="workType" />
+        <result column="org" property="org" />
+        <result column="dept" property="dept" />
+        <result column="job_name" property="jobName" />
+        <result column="join_time" property="joinTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, employee_id, course_name, train_style, make_course, begin_time, class_hour, remark, create_time, update_time, is_del
+    </sql>
+
+    <select id="selectUnionPage" resultMap="UnionResultMap">
+        select
+        btp.id, employee_id, course_name, train_style, make_course, begin_time, class_hour, btp.remark, btp.create_time, btp.update_time,
+        employee_code, real_name, on_job, work_type, org, dept, job_name, join_time
+        from base_train_plan btp
+        inner join base_employee be
+        on be.id = btp.employee_id
+        where btp.is_del = 0
+        <if test="employeeCode != null">
+            and be.employee_code like concat('%', #{employeeCode} ,'%')
+        </if>
+        <if test="realName != null">
+            and be.real_name like concat('%', #{realName} ,'%')
+        </if>
+        <if test="courseName != null">
+            and btp.course_name like concat('%', #{courseName} ,'%')
+        </if>
+    </select>
+</mapper>
