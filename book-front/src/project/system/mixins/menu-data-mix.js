@@ -70,8 +70,8 @@ export default {
                 'url': 'base-train-record',
             }, {
                 'id': '4',
-                'menuName': '员工上岗证',
-                'url': 'base-employee',
+                'menuName': '讲师信息',
+                'url': 'base-teacher',
             }]
         },
     },

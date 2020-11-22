@@ -30,7 +30,7 @@ public class CodeGen {
             @Override
             public String[] tableNames() {
                 return new String[]{
-                        "base_train_record"
+                        "base_teacher"
                 };
             }
 
