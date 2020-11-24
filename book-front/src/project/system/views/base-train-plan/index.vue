@@ -18,6 +18,7 @@
                     el-input(v-model="form.makeCourse")
                 el-form-item(label="预计开课时间")
                     el-date-picker(v-model="form.beginTime" type="month" format="yyyy-MM" value-format="timestamp")
+                    el-date-picker(v-model="form.endTime" type="month" format="yyyy-MM" value-format="timestamp")
                 el-form-item
                     el-button(type="primary", native-type="submit") 查询
                     el-button(type="success" @click="handleEdit()") 新增
