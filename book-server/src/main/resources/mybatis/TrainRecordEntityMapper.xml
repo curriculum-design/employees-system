@@ -82,10 +82,10 @@
             and btp.make_course like concat('%', #{makeCourse} ,'%')
         </if>
         <if test="beginTime != null">
-            and btp.begin_time > #{beginTime}
+            and btp.begin_time >= #{beginTime}
         </if>
         <if test="endTime != null">
-            and btp.begin_time <![CDATA[<]]> #{endTime}
+            and btp.begin_time <![CDATA[<=]]> #{endTime}
         </if>
         <if test="teacherName != null">
             and btp.teacher_name like concat('%', #{teacherName} ,'%')
