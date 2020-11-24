@@ -2,12 +2,20 @@
     ContentBody(title="员工培训记录")
         template(slot="filter")
             el-form(:inline="true", v-model="form" @submit.prevent.native="filter(form)")
-                el-form-item(label="工号")
-                    el-input(v-model="form.employeeCode")
                 el-form-item(label="中文名")
                     el-input(v-model="form.realName")
+                el-form-item(label="机构")
+                    el-input(v-model="form.org")
+                el-form-item(label="部门")
+                    el-input(v-model="form.dept")
+                el-form-item(label="岗位")
+                    el-input(v-model="form.jobName")
                 el-form-item(label="课程名称")
                     el-input(v-model="form.courseName")
+                el-form-item(label="开设部门/机构")
+                    el-input(v-model="form.makeCourse")
+                el-form-item(label="开课时间")
+                    el-date-picker(v-model="timeRange" type="daterange")
                 el-form-item(label="讲师")
                     el-input(v-model="form.teacherName")
                 el-form-item
@@ -68,6 +76,24 @@ export default {
         }
     },
     computed: {
+        timeRange: {
+            get() {
+                if (this.form.beginTime) {
+                    return [new Date(this.form.beginTime), new Date(this.form.endTime)]
+                }
+                return []
+            },
+            set(time) {
+                const [startTime, endTime] = time || []
+                if (startTime) {
+                    this.$set(this.form, 'beginTime', startTime.getTime())
+                    this.$set(this.form, 'endTime', endTime.getTime())
+                } else {
+                    this.$set(this.form, 'beginTime', null)
+                    this.$set(this.form, 'endTime', null)
+                }
+            },
+        },
         ...mapGetters['systemMapping'],
         headerMapping() {
             return {
@@ -76,6 +102,21 @@ export default {
                 },
                 realName: {
                     label: '中文名'
+                },
+                onJob: {
+                    label: '是否在职',
+                },
+                workType: {
+                    label: '工种',
+                },
+                org: {
+                    label: '机构',
+                },
+                dept: {
+                    label: '部门',
+                },
+                jobName: {
+                    label: '岗位',
                 },
                 courseName: {
                     label: '课程名称'
@@ -108,14 +149,6 @@ export default {
                 },
                 remark: {
                     label: '备注'
-                },
-                createTime: {
-                    label: '创建时间',
-                    format: (t) => this.$format.date(t, 'yyyy-mm-dd')
-                },
-                updateTime: {
-                    label: '修改时间',
-                    format: (t) => this.$format.date(t, 'yyyy-mm-dd')
                 },
             }
         },

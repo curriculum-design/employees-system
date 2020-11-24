@@ -1,6 +1,6 @@
 module.exports = {
     '/management-system-api': {
-        target: 'https://admin.tulading.tech/api',
+        target: 'http://localhost:18200',
         // secure: false,
         changeOrigin: true,
         secure: false,

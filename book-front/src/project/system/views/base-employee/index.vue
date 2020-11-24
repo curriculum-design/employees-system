@@ -2,10 +2,20 @@
     ContentBody(title="员工列表")
         template(slot="filter")
             el-form(:inline="true", v-model="form" @submit.prevent.native="filter(form)")
-                el-form-item(label="工号")
-                    el-input(v-model="form.employeeCode")
-                el-form-item(label="中文名称")
+                el-form-item(label="中文名")
                     el-input(v-model="form.realName")
+                el-form-item(label="是否在职")
+                    el-input(v-model="form.onJob")
+                el-form-item(label="工种")
+                    el-input(v-model="form.workType")
+                el-form-item(label="机构")
+                    el-input(v-model="form.org")
+                el-form-item(label="部门")
+                    el-input(v-model="form.dept")
+                el-form-item(label="岗位")
+                    el-input(v-model="form.jobName")
+                el-form-item(label="入职时间")
+                    el-date-picker(v-model="timeRange" type="daterange")
                 el-form-item
                     el-button(type="primary", native-type="submit") 查询
                     el-button(type="success" @click="handleEdit()") 新增
@@ -27,6 +37,7 @@
 import CurdTableMix from '@/utils/mixins/curd-table-mix.js'
 import {mapGetters} from 'vuex'
 import EditForm from './form'
+
 export default {
     components: {EditForm},
     mixins: [CurdTableMix('$baseEmployeeService')],
@@ -45,7 +56,7 @@ export default {
                 createTime: '',
                 updateTime: '',
                 isDel: '',
-            }
+            },
         }
     },
     methods: {
@@ -57,50 +68,60 @@ export default {
                 this.editShow = false
                 this.loadData()
             })
-        }
+        },
     },
     computed: {
+        timeRange: {
+            get() {
+                if (this.form.beginTime) {
+                    return [new Date(this.form.beginTime), new Date(this.form.endTime)]
+                }
+                return []
+            },
+            set(time) {
+                const [startTime, endTime] = time || []
+                if (startTime) {
+                    this.$set(this.form, 'beginTime', startTime.getTime())
+                    this.$set(this.form, 'endTime', endTime.getTime())
+                } else {
+                    this.$set(this.form, 'beginTime', null)
+                    this.$set(this.form, 'endTime', null)
+                }
+            },
+        },
         ...mapGetters['systemMapping'],
         headerMapping() {
             return {
                 employeeCode: {
-                    label: '工号'
+                    label: '工号',
                 },
                 realName: {
-                    label: '中文名'
+                    label: '中文名',
                 },
                 onJob: {
-                    label: '是否在职'
+                    label: '是否在职',
                 },
                 workType: {
-                    label: '工种'
+                    label: '工种',
                 },
                 org: {
-                    label: '机构'
+                    label: '机构',
                 },
                 dept: {
-                    label: '部门'
+                    label: '部门',
                 },
                 jobName: {
-                    label: '岗位'
+                    label: '岗位',
                 },
                 joinTime: {
                     label: '入职时间',
-                    format: (t) => this.$format.date(t, 'yyyy-mm-dd')
-                },
-                createTime: {
-                    label: '新增时间',
-                    format: (t) => this.$format.date(t, 'yyyy-mm-dd')
-                },
-                updateTime: {
-                    label: '修改时间',
-                    format: (t) => this.$format.date(t, 'yyyy-mm-dd')
+                    format: (t) => this.$format.date(t, 'yyyy-mm-dd'),
                 },
             }
         },
         exportOptions() {
             return {
-                headerMapping: this.headerMapping
+                headerMapping: this.headerMapping,
             }
         },
         importOptions() {
@@ -113,10 +134,10 @@ export default {
                     '机构': 'org',
                     '部门': 'dept',
                     '岗位': 'jobName',
-                    '入职时间': 'joinTime'
-                }
+                    '入职时间': 'joinTime',
+                },
             }
-        }
+        },
     },
 }
 </script>

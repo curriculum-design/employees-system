@@ -2,12 +2,22 @@
     ContentBody(title="员工培训计划")
         template(slot="filter")
             el-form(:inline="true", v-model="form" @submit.prevent.native="filter(form)")
-                el-form-item(label="工号")
-                    el-input(v-model="form.employeeCode")
                 el-form-item(label="中文名")
                     el-input(v-model="form.realName")
+                el-form-item(label="机构")
+                    el-input(v-model="form.org")
+                el-form-item(label="部门")
+                    el-input(v-model="form.dept")
+                el-form-item(label="岗位")
+                    el-input(v-model="form.jobName")
                 el-form-item(label="课程名称")
                     el-input(v-model="form.courseName")
+                el-form-item(label="培训形式")
+                    el-input(v-model="form.trainStyle")
+                el-form-item(label="开设部门/机构")
+                    el-input(v-model="form.makeCourse")
+                el-form-item(label="预计开课时间")
+                    el-date-picker(v-model="form.beginTime" type="month" format="yyyy-MM" value-format="timestamp")
                 el-form-item
                     el-button(type="primary", native-type="submit") 查询
                     el-button(type="success" @click="handleEdit()") 新增
@@ -70,6 +80,21 @@ export default {
                 realName: {
                     label: '中文名'
                 },
+                onJob: {
+                    label: '是否在职',
+                },
+                workType: {
+                    label: '工种',
+                },
+                org: {
+                    label: '机构',
+                },
+                dept: {
+                    label: '部门',
+                },
+                jobName: {
+                    label: '岗位',
+                },
                 courseName: {
                     label: '课程名称'
                 },
@@ -81,21 +106,13 @@ export default {
                 },
                 beginTime: {
                     label: '预计开课时间',
-                    format: (t) => this.$format.date(t, 'yyyy-mm-dd')
+                    format: (t) => this.$format.date(t, 'yyyy-mm')
                 },
                 classHour: {
                     label: '课时'
                 },
                 remark: {
                     label: '备注'
-                },
-                createTime: {
-                    label: '创建时间',
-                    format: (t) => this.$format.date(t, 'yyyy-mm-dd')
-                },
-                updateTime: {
-                    label: '修改时间',
-                    format: (t) => this.$format.date(t, 'yyyy-mm-dd')
                 },
             }
         },
