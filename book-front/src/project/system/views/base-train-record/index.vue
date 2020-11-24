@@ -2,7 +2,7 @@
     ContentBody(title="员工培训记录")
         template(slot="filter")
             el-form(:inline="true", v-model="form" @submit.prevent.native="filter(form)")
-                el-form-item(label="中文名")
+                el-form-item(label="员工姓名")
                     el-input(v-model="form.realName")
                 el-form-item(label="机构")
                     el-input(v-model="form.org")
@@ -101,7 +101,7 @@ export default {
                     label: '工号'
                 },
                 realName: {
-                    label: '中文名'
+                    label: '员工姓名'
                 },
                 onJob: {
                     label: '是否在职',

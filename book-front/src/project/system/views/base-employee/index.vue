@@ -2,7 +2,7 @@
     ContentBody(title="员工列表")
         template(slot="filter")
             el-form(:inline="true", v-model="form" @submit.prevent.native="filter(form)")
-                el-form-item(label="中文名")
+                el-form-item(label="员工姓名")
                     el-input(v-model="form.realName")
                 el-form-item(label="是否在职")
                     el-input(v-model="form.onJob")
@@ -96,7 +96,7 @@ export default {
                     label: '工号',
                 },
                 realName: {
-                    label: '中文名',
+                    label: '员工姓名',
                 },
                 onJob: {
                     label: '是否在职',
@@ -128,7 +128,7 @@ export default {
             return {
                 headerMapping: {
                     '人员编码': 'employeeCode',
-                    '中文名称': 'realName',
+                    '员工姓名': 'realName',
                     '是否在职': 'onJob',
                     '工种': 'workType',
                     '机构': 'org',

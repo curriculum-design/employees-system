@@ -1,7 +1,7 @@
 <template lang="pug">
 el-dialog(title="编辑", :visible.sync="dialogShow", :close-on-click-modal="false", :append-to-body="true")
     el-form(v-model="form" @submit.prevent.native="submitHandler()" label-width="120px")
-        el-form-item(label="工号/中文名")
+        el-form-item(label="工号/员工姓名")
             el-select(v-model="form.employeeId" filterable placeholder="请选择")
                 el-option(v-for="item in employeeList" :key="item.id" :label="item.employeeCode + '/' + item.realName" :value="item.id")
         el-form-item(label="课程名称")
