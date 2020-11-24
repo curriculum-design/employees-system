@@ -4,6 +4,8 @@ import org.cdteam.employee.base.dto.TrainPlanCreateDTO;
 import org.cdteam.employee.base.dto.TrainPlanDTO;
 import org.cdteam.spring.cloud.starter.context.bean.Pagination;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -16,7 +18,9 @@ import java.util.List;
  */
 public interface TrainPlanService {
     
-    Pagination<TrainPlanDTO> page(Integer pageSize, Integer pageNum, String employeeCode, String realName, String courseName);
+    Pagination<TrainPlanDTO> page(Integer pageSize, Integer pageNum
+            , String realName, String org, String dept, String jobName, String courseName, String trainStyle, String makeCourse
+            , LocalDateTime beginTime, LocalDateTime endTime);
 
     Integer save(TrainPlanCreateDTO employeeDTO);
 

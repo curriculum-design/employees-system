@@ -17,6 +17,7 @@ import org.cdteam.spring.cloud.starter.context.bean.Pagination;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -34,11 +35,14 @@ public class TrainRecordServiceImpl implements TrainRecordService {
     private TrainRecordMapper mapper;
 
     @Override
-    public Pagination<TrainRecordDTO> page(Integer pageSize, Integer pageNum, String employeeCode, String realName, String courseName, String teacherName) {
+    public Pagination<TrainRecordDTO> page(Integer pageSize, Integer pageNum
+            , String realName, String org, String dept, String jobName, String courseName, String makeCourse
+            , LocalDateTime beginTime, LocalDateTime endTime, String teacherName) {
         Page<TrainRecordUnionDO> page = new Page<>();
         page.setCurrent(pageNum);
         page.setSize(pageSize);
-        IPage<TrainRecordUnionDO> trainRecordEntityIPage = mapper.selectUnionPage(page, employeeCode, realName, courseName, teacherName);
+        IPage<TrainRecordUnionDO> trainRecordEntityIPage = mapper.selectUnionPage(page, realName, org, dept, jobName
+                , courseName, makeCourse, beginTime, endTime, teacherName);
         List<TrainRecordUnionDO> records = trainRecordEntityIPage.getRecords();
         List<TrainRecordDTO> trainRecordDTOS = ListUtils.transferList(records, TrainRecordDTO.class);
         return new Pagination<>(pageNum, pageSize, trainRecordEntityIPage.getTotal(), trainRecordDTOS);

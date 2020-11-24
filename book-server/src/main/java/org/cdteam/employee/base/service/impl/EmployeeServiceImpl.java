@@ -20,6 +20,7 @@ import org.cdteam.employee.base.service.EmployeeService;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -38,22 +39,39 @@ public class EmployeeServiceImpl implements EmployeeService {
     private EmployeeMapper mapper;
 
     @Override
-    public Pagination<EmployeeDTO> page(Integer pageSize, Integer pageNum, String employeeCode, String realName) {
+    public Pagination<EmployeeDTO> page(Integer pageSize, Integer pageNum, String realName, String onJob, String workType, String org, String dept, String jobName, LocalDateTime beginTime, LocalDateTime endTime) {
         Page<EmployeeEntity> page = new Page<>();
         page.setCurrent(pageNum);
         page.setSize(pageSize);
         LambdaQueryWrapper<EmployeeEntity> queryWrapper = Wrappers.lambdaQuery();
-        if (StringUtils.isNotBlank(employeeCode)) {
-            queryWrapper.like(EmployeeEntity::getEmployeeCode, employeeCode);
-        }
         if (StringUtils.isNotBlank(realName)) {
             queryWrapper.like(EmployeeEntity::getRealName, realName);
+        }
+        if (StringUtils.isNotBlank(onJob)) {
+            queryWrapper.like(EmployeeEntity::getOnJob, onJob);
+        }
+        if (StringUtils.isNotBlank(workType)) {
+            queryWrapper.like(EmployeeEntity::getWorkType, workType);
+        }
+        if (StringUtils.isNotBlank(org)) {
+            queryWrapper.like(EmployeeEntity::getOrg, org);
+        }
+        if (StringUtils.isNotBlank(dept)) {
+            queryWrapper.like(EmployeeEntity::getDept, dept);
+        }
+        if (StringUtils.isNotBlank(jobName)) {
+            queryWrapper.like(EmployeeEntity::getJobName, jobName);
+        }
+        if (beginTime != null) {
+            queryWrapper.ge(EmployeeEntity::getJoinTime, beginTime);
+        }
+        if (endTime != null) {
+            queryWrapper.le(EmployeeEntity::getJoinTime, endTime);
         }
         IPage<EmployeeEntity> employeeEntityIPage = mapper.selectPage(page, queryWrapper);
         List<EmployeeEntity> records = employeeEntityIPage.getRecords();
         List<EmployeeDTO> employeeDTOS = ListUtils.transferList(records, EmployeeDTO.class);
-        Pagination<EmployeeDTO> result = new Pagination<>(pageNum, pageSize, employeeEntityIPage.getTotal(), employeeDTOS);
-        return result;
+        return new Pagination<>(pageNum, pageSize, employeeEntityIPage.getTotal(), employeeDTOS);
     }
 
     @Override
@@ -75,7 +93,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Integer uploadSave(EmployeeCreateDTO employeeDTO) {
         EmployeeEntity entity = mapper.selectOne(Wrappers.<EmployeeEntity>lambdaQuery()
                 .eq(EmployeeEntity::getEmployeeCode, employeeDTO.getEmployeeCode()));
-        if(entity != null){
+        if (entity != null) {
             employeeDTO.setId(entity.getId());
         }
         return save(employeeDTO);

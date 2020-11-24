@@ -8,9 +8,11 @@ import org.cdteam.employee.base.domain.TrainPlanEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+
 /**
  * <p>
- *  Mapper 接口
+ * Mapper 接口
  * </p>
  *
  * @author lesl
@@ -19,5 +21,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TrainPlanMapper extends BaseMapper<TrainPlanEntity> {
 
-    IPage<TrainPlanUnionDO> selectUnionPage(Page<TrainPlanUnionDO> page, String employeeCode, String realName, String courseName);
+    IPage<TrainPlanUnionDO> selectUnionPage(Page<TrainPlanUnionDO> page, String realName
+            , String org, String dept, String jobName, String courseName, String trainStyle, String makeCourse, LocalDateTime beginTime, LocalDateTime endTime);
 }

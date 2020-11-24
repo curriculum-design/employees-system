@@ -53,14 +53,29 @@
         inner join base_employee be
         on be.id = btp.employee_id
         where btp.is_del = 0
-        <if test="employeeCode != null">
-            and be.employee_code like concat('%', #{employeeCode} ,'%')
-        </if>
         <if test="realName != null">
             and be.real_name like concat('%', #{realName} ,'%')
         </if>
+        <if test="org != null">
+            and be.org like concat('%', #{org} ,'%')
+        </if>
+        <if test="dept != null">
+            and be.dept like concat('%', #{dept} ,'%')
+        </if>
+        <if test="jobName != null">
+            and be.job_name like concat('%', #{jobName} ,'%')
+        </if>
         <if test="courseName != null">
             and btp.course_name like concat('%', #{courseName} ,'%')
+        </if>
+        <if test="trainStyle != null">
+            and btp.train_style like concat('%', #{trainStyle} ,'%')
+        </if>
+        <if test="makeCourse != null">
+            and btp.make_course like concat('%', #{makeCourse} ,'%')
+        </if>
+        <if test="beginTime != null">
+            and btp.begin_time = #{beginTime}
         </if>
     </select>
 </mapper>

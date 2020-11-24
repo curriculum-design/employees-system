@@ -43,3 +43,14 @@ spring:
     username: root
     password: ue88824568==321
     driver-class-name: com.mysql.jdbc.Driver
+
+---
+# 本地运行环境
+spring:
+  profiles: local
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/employees?useOldAliasMetadataBehavior=true&useUnicode=true&zeroDateTimeBehavior=convertToNull&useSSL=false
+    username: root
+    password: 123456
+    driver-class-name: com.mysql.jdbc.Driver
+

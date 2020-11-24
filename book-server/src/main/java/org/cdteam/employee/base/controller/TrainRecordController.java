@@ -38,8 +38,10 @@ public class TrainRecordController {
     @ApiOperation("获取培训计划列表")
     @GetMapping("/list")
     public Pagination<TrainRecordDTO> info(Integer pageSize, @RequestParam(defaultValue = "1") Integer pageNum
-            , String employeeCode, String realName, String courseName, String teacherName) {
-        return trainRecordService.page(pageSize, pageNum, employeeCode, realName, courseName, teacherName);
+            , String realName, String org, String dept, String jobName, String courseName, String makeCourse
+            , LocalDateTime beginTime, LocalDateTime endTime, String teacherName) {
+        return trainRecordService.page(pageSize, pageNum, realName, org, dept, jobName
+                , courseName, makeCourse, beginTime, endTime, teacherName);
     }
 
     @ApiOperation("新增培训计划")

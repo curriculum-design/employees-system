@@ -7,6 +7,8 @@ import org.cdteam.employee.base.domain.TrainRecordEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+
 /**
  * <p>
  *  Mapper 接口
@@ -18,5 +20,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TrainRecordMapper extends BaseMapper<TrainRecordEntity> {
 
-    IPage<TrainRecordUnionDO> selectUnionPage(Page<TrainRecordUnionDO> page, String employeeCode, String realName, String courseName, String teacherName);
+    IPage<TrainRecordUnionDO> selectUnionPage(Page<TrainRecordUnionDO> page
+            , String realName, String org, String dept, String jobName, String courseName, String makeCourse
+            , LocalDateTime beginTime, LocalDateTime endTime, String teacherName);
 }

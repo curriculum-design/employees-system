@@ -12,12 +12,14 @@ import org.cdteam.employee.base.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 @Slf4j
 @Api(value = "人员管理", tags = "[基础模块]人员管理")
@@ -31,8 +33,11 @@ public class EmployeeController {
     @ApiOperation("获取人员列表")
     @GetMapping("/list")
     public Pagination<EmployeeDTO> info(Integer pageSize, @RequestParam(defaultValue = "1") Integer pageNum
-            , String employeeCode, String realName) {
-        return employeeService.page(pageSize, pageNum, employeeCode, realName);
+            , String realName, String onJob, String workType, String org, String dept, String jobName
+            , Timestamp beginTime, Timestamp endTime) {
+        return employeeService.page(pageSize, pageNum, realName, onJob, workType, org, dept, jobName
+                , Optional.ofNullable(beginTime).map(Timestamp::toLocalDateTime).orElse(null)
+                , Optional.ofNullable(endTime).map(Timestamp::toLocalDateTime).orElse(null));
     }
 
     @ApiOperation("新增人员")
@@ -47,7 +52,7 @@ public class EmployeeController {
             localDate = LocalDate.parse(joinTime, formatter);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
-            throw e ;
+            throw e;
         }
 
         EmployeeCreateDTO employeeCreateDTO = BeanCopyUtils.transferBean(employeeDTO, EmployeeCreateDTO.class);

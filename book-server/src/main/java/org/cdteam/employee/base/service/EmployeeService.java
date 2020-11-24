@@ -5,6 +5,7 @@ import org.cdteam.employee.base.dto.EmployeeDTO;
 import org.cdteam.employee.base.dto.EmployeeUploadDTO;
 import org.cdteam.spring.cloud.starter.context.bean.Pagination;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ import java.util.List;
  */
 public interface EmployeeService {
 
-    Pagination<EmployeeDTO> page(Integer pageSize, Integer pageNum, String employeeCode, String realName);
+    Pagination<EmployeeDTO> page(Integer pageSize, Integer pageNum, String realName, String onJob, String workType, String org, String dept, String jobName, LocalDateTime beginTime, LocalDateTime endTime);
 
     Integer save(EmployeeCreateDTO employeeDTO);
 

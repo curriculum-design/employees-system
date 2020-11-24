@@ -16,12 +16,14 @@ import org.cdteam.spring.cloud.starter.context.exception.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 
 @Slf4j
 @Api(value = "培训计划管理", tags = "[基础模块]培训计划管理")
@@ -38,8 +40,11 @@ public class TrainPlanController {
     @ApiOperation("获取培训计划列表")
     @GetMapping("/list")
     public Pagination<TrainPlanDTO> info(Integer pageSize, @RequestParam(defaultValue = "1") Integer pageNum
-            , String employeeCode, String realName, String courseName) {
-        return trainPlanService.page(pageSize, pageNum, employeeCode, realName, courseName);
+            , String realName, String org, String dept, String jobName, String courseName, String trainStyle, String makeCourse
+            , Timestamp beginTime, Timestamp endTime) {
+        return trainPlanService.page(pageSize, pageNum, realName, org, dept, jobName, courseName, trainStyle, makeCourse
+                , Optional.ofNullable(beginTime).map(Timestamp::toLocalDateTime).orElse(null)
+                , Optional.ofNullable(endTime).map(Timestamp::toLocalDateTime).orElse(null));
     }
 
     @ApiOperation("新增培训计划")
