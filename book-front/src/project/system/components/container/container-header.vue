@@ -1,7 +1,7 @@
 <template lang="pug">
   .boss-header
       div(style="width:80%")
-          span(style="font-size:30px;margin-left:100px;padding-top:3px") 人员管理系统
+          span(style="font-size:30px;margin-left:100px;padding-top:3px") 培训管理系统
       .right-container
           el-popover(ref="messagePop"
           popper-class="message-popover"

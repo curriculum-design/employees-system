@@ -1,6 +1,6 @@
 <template lang="pug">
 .login-bg(v-loading="fullLoading" element-loading-text="正在登陆中...")
-    .login-title 人员管理系统
+    .login-title 培训管理系统
     el-tabs(type="border-card")
         <!--el-tab-pane(label="钉钉扫码")-->
             <!--#ding-talk-login(v-loading="containerLoading")-->
