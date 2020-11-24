@@ -56,7 +56,7 @@ public class TrainPlanController {
 
         LocalDate localDate;
         try {
-            localDate = LocalDate.parse(joinTime, formatter);
+            localDate = LocalDate.parse(joinTime + "-01", formatter);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw e;
