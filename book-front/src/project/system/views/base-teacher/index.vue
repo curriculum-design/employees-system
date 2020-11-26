@@ -100,9 +100,11 @@ export default {
         importOptions() {
             return {
                 headerMapping: {
+                    '工号': 'employeeCode',
                     '讲师姓名': 'teacherName',
                     '类型': 'workType',
-                    '所属机构': 'org',
+                    '主讲课程': 'speakCourse',
+                    '认证/合作时间': 'teamWorkTime',
                 }
             }
         }

@@ -2,7 +2,7 @@
     el-dialog(title="编辑", :visible.sync="dialogShow", :close-on-click-modal="false", :append-to-body="true")
         el-form(v-model="form" @submit.prevent.native="submitHandler()" label-width="120px")
             el-form-item(label="工号/员工姓名")
-                el-select(v-model="form.employeeCode" filterable placeholder="请选择")
+                el-select(v-model="form.employeeCode" filterable placeholder="请选择" @change="employeeChange" clearable=)
                     el-option(v-for="item in employeeList" :key="item.employeeCode" :label="item.employeeCode + '/' + item.realName" :value="item.employeeCode")
             el-form-item(label="讲师姓名")
                 el-input(v-model="form.teacherName")
@@ -33,6 +33,19 @@ export default {
     },
     async created() {
         this.employeeList = await this.$baseEmployeeService.all({}, {method: 'get'})
+    },
+    methods: {
+        employeeChange: function(code) {
+            debugger
+            if (code) {
+                const v = this.employeeList.filter(d => d.employeeCode === code).pop()
+                this.form.teacherName = v.realName
+                this.form.workType = '内部讲师'
+            } else {
+                this.form.teacherName = ''
+                this.form.workType = '外部讲师'
+            }
+        },
     },
 }
 </script>
