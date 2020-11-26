@@ -38,7 +38,21 @@ public class TeacherController {
     @ApiOperation("新增讲师")
     @PostMapping("/upload-save")
     public Integer uploadSave(@RequestBody TeacherUploadDTO teacherDTO) {
+        String teamWorkTime = teacherDTO.getTeamWorkTime();
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault());
+
+        LocalDateTime localDateTime;
+        try {
+            LocalDate localDate = LocalDate.parse(teamWorkTime, formatter);
+            localDateTime = LocalDateTime.of(localDate, LocalTime.MIN);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+            throw e;
+        }
+
         TeacherCreateDTO teacherCreateDTO = BeanCopyUtils.transferBean(teacherDTO, TeacherCreateDTO.class);
+        teacherCreateDTO.setTeamWorkTime(localDateTime);
         return teacherService.uploadSave(teacherCreateDTO);
     }
 

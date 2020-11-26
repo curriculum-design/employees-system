@@ -17,6 +17,11 @@ public class TeacherCreateDTO {
     private Long id;
 
     /**
+     * 人员编码
+     */
+    private String employeeCode;
+
+    /**
      * 讲师名称
      */
     private String teacherName;
@@ -25,5 +30,16 @@ public class TeacherCreateDTO {
      * 类型
      */
     private String workType;
+    /**
+     * 主讲课程
+     */
+    private String speakCourse;
+
+    /**
+     * 认证/合作时间
+     */
+    @JsonSerialize(using = LocalDateTimeConverter.class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer.class)
+    private LocalDateTime teamWorkTime;
 
 }

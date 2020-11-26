@@ -19,6 +19,11 @@ public class TeacherDTO {
     private Long id;
 
     /**
+     * 人员编码
+     */
+    private String employeeCode;
+
+    /**
      * 中文名称
      */
     private String teacherName;
@@ -41,5 +46,15 @@ public class TeacherDTO {
     @TableField(fill = FieldFill.INSERT_UPDATE)
     @JsonSerialize(using = LocalDateTimeConverter.class)
     private LocalDateTime updateTime;
+    /**
+     * 主讲课程
+     */
+    private String speakCourse;
+
+    /**
+     * 认证/合作时间
+     */
+    @JsonSerialize(using = LocalDateTimeConverter.class)
+    private LocalDateTime teamWorkTime;
 
 }

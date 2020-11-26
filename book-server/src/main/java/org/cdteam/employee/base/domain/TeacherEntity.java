@@ -19,7 +19,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author lesl
- * @since 2020-11-22
+ * @since 2020-11-26
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -35,6 +35,11 @@ public class TeacherEntity implements Serializable {
     private Long id;
 
     /**
+     * 人员编码
+     */
+    private String employeeCode;
+
+    /**
      * 讲师姓名
      */
     private String teacherName;
@@ -45,9 +50,14 @@ public class TeacherEntity implements Serializable {
     private String workType;
 
     /**
-     * 所属机构
+     * 主讲课程
      */
-    private String org;
+    private String speakCourse;
+
+    /**
+     * 认证/合作时间
+     */
+    private LocalDateTime teamWorkTime;
 
     /**
      * 新增时间

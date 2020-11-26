@@ -5,9 +5,11 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="org.cdteam.employee.base.domain.TeacherEntity">
         <id column="id" property="id" />
+        <result column="employee_code" property="employeeCode" />
         <result column="teacher_name" property="teacherName" />
         <result column="work_type" property="workType" />
-        <result column="org" property="org" />
+        <result column="speak_course" property="speakCourse" />
+        <result column="team_work_time" property="teamWorkTime" />
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
         <result column="is_del" property="isDel" />
@@ -15,7 +17,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, teacher_name, work_type, org, create_time, update_time, is_del
+        id, employee_code, teacher_name, work_type, speak_course, team_work_time, create_time, update_time, is_del
     </sql>
 
 </mapper>

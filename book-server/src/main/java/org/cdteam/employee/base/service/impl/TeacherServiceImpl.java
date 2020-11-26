@@ -51,9 +51,6 @@ public class TeacherServiceImpl implements TeacherService {
         if (StringUtils.isNotBlank(workType)) {
             queryWrapper.eq(TeacherEntity::getWorkType, workType);
         }
-        if (StringUtils.isNotBlank(org)) {
-            queryWrapper.eq(TeacherEntity::getOrg, org);
-        }
         IPage<TeacherEntity> employeeEntityIPage = mapper.selectPage(page, queryWrapper);
         List<TeacherEntity> records = employeeEntityIPage.getRecords();
         List<TeacherDTO> employeeDTOS = ListUtils.transferList(records, TeacherDTO.class);
