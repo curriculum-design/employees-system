@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
+import org.cdteam.employee.base.domain.EmployeeEntity;
 import org.cdteam.employee.base.domain.TeacherEntity;
+import org.cdteam.employee.base.dto.EmployeeDTO;
 import org.cdteam.employee.base.dto.TeacherCreateDTO;
 import org.cdteam.employee.base.dto.TeacherDTO;
 import org.cdteam.employee.base.dto.TeacherUploadDTO;
@@ -84,6 +86,12 @@ public class TeacherServiceImpl implements TeacherService {
     public List<TeacherDTO> all() {
         List<TeacherEntity> employeeEntities = mapper.selectList(Wrappers.emptyWrapper());
         return ListUtils.transferList(employeeEntities, TeacherDTO.class);
+    }
+
+    @Override
+    public TeacherDTO getByName(String teacherName) {
+        TeacherEntity teacherEntity = mapper.selectOne(Wrappers.<TeacherEntity>lambdaQuery().eq(TeacherEntity::getTeacherName, teacherName));
+        return BeanCopyUtils.transferBean(teacherEntity, TeacherDTO.class);
     }
 
     @Override

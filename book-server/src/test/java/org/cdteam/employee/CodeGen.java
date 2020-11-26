@@ -41,8 +41,8 @@ public class CodeGen {
 
             @Override
             public Map<String, Set<FileType>> recoveryTables() {
-                return ImmutableMap.of();
-//                return ImmutableMap.of("base_employee", ImmutableSet.of(FileType.ENTITY, FileType.MAPPER, FileType.XML));
+//                return ImmutableMap.of();
+                return ImmutableMap.of("base_teacher", ImmutableSet.of(FileType.ENTITY, FileType.MAPPER, FileType.XML));
             }
 
             @Override

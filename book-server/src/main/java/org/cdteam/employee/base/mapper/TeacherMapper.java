@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
  * </p>
  *
  * @author lesl
- * @since 2020-11-22
+ * @since 2020-11-26
  */
 @Repository
 public interface TeacherMapper extends BaseMapper<TeacherEntity> {

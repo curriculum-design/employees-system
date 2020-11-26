@@ -22,7 +22,7 @@ import java.util.List;
 
 /**
  * <p>
- *  服务实现类
+ * 服务实现类
  * </p>
  *
  * @author lesl
@@ -50,6 +50,9 @@ public class TrainRecordServiceImpl implements TrainRecordService {
 
     @Override
     public Integer save(TrainRecordCreateDTO trainRecordDTO) {
+        if (StringUtils.isEmpty(trainRecordDTO.getScore())) {
+            trainRecordDTO.setScore("合格");
+        }
         TrainRecordEntity trainRecordEntity = BeanCopyUtils.transferBean(trainRecordDTO, TrainRecordEntity.class);
         if (trainRecordDTO.getId() == null) {
             return mapper.insert(trainRecordEntity);
@@ -62,7 +65,7 @@ public class TrainRecordServiceImpl implements TrainRecordService {
         TrainRecordEntity entity = mapper.selectOne(Wrappers.<TrainRecordEntity>lambdaQuery()
                 .eq(TrainRecordEntity::getEmployeeId, trainRecordDTO.getEmployeeId())
                 .eq(TrainRecordEntity::getCourseName, trainRecordDTO.getCourseName()));
-        if(entity != null){
+        if (entity != null) {
             trainRecordDTO.setId(entity.getId());
         }
         return save(trainRecordDTO);

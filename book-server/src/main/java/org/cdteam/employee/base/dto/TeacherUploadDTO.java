@@ -14,9 +14,4 @@ public class TeacherUploadDTO {
      * 类型
      */
     private String workType;
-
-    /**
-     * 机构
-     */
-    private String org;
 }

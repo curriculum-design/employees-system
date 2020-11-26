@@ -29,11 +29,6 @@ public class TeacherDTO {
     private String workType;
 
     /**
-     * 机构
-     */
-    private String org;
-
-    /**
      * 新增时间
      */
     @TableField(fill = FieldFill.INSERT)

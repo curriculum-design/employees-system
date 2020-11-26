@@ -45,7 +45,7 @@ public class TrainRecordUploadDTO {
     /**
      * 课时
      */
-    private Integer classHour;
+    private Float classHour;
 
     /**
      * 讲师ID

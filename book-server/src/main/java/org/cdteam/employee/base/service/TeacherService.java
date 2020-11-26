@@ -30,4 +30,6 @@ public interface TeacherService {
     Integer uploadSave(TeacherCreateDTO employeeDTO);
 
     List<TeacherDTO> all();
+
+    TeacherDTO getByName(String teacherName);
 }

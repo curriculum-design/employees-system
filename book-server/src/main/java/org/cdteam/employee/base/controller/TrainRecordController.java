@@ -3,11 +3,9 @@ package org.cdteam.employee.base.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.cdteam.employee.base.dto.EmployeeDTO;
-import org.cdteam.employee.base.dto.TrainRecordCreateDTO;
-import org.cdteam.employee.base.dto.TrainRecordDTO;
-import org.cdteam.employee.base.dto.TrainRecordUploadDTO;
+import org.cdteam.employee.base.dto.*;
 import org.cdteam.employee.base.service.EmployeeService;
+import org.cdteam.employee.base.service.TeacherService;
 import org.cdteam.employee.base.service.TrainRecordService;
 import org.cdteam.spring.cloud.starter.common.utils.BeanCopyUtils;
 import org.cdteam.spring.cloud.starter.context.bean.Pagination;
@@ -31,6 +29,9 @@ public class TrainRecordController {
 
     @Autowired
     TrainRecordService trainRecordService;
+
+    @Autowired
+    TeacherService teacherService;
 
     @Autowired
     EmployeeService employeeService;
@@ -65,6 +66,11 @@ public class TrainRecordController {
         EmployeeDTO employeeDTO = employeeService.getByCode(trainRecordDTO.getEmployeeCode());
         if (employeeDTO == null) {
             throw new AppException(ResponseCodeEnum.COMMON_EXCEPTION, "编码不存在");
+        }
+        // 判断讲师是否存在
+        TeacherDTO teacherDTO = teacherService.getByName(trainRecordDTO.getTeacherName());
+        if (teacherDTO == null) {
+            throw new AppException(ResponseCodeEnum.COMMON_EXCEPTION, "讲师不存在");
         }
 
         TrainRecordCreateDTO trainRecordCreateDTO = BeanCopyUtils.transferBean(trainRecordDTO, TrainRecordCreateDTO.class);

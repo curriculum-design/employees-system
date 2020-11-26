@@ -26,9 +26,4 @@ public class TeacherCreateDTO {
      */
     private String workType;
 
-    /**
-     * 机构
-     */
-    private String org;
-
 }

@@ -48,7 +48,7 @@ public class TrainPlanDTO extends EmployeeDTO{
     /**
      * 课时
      */
-    private Integer classHour;
+    private Float classHour;
 
     /**
      * 备注

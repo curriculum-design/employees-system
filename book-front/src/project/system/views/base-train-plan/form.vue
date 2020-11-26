@@ -13,7 +13,7 @@ el-dialog(title="编辑", :visible.sync="dialogShow", :close-on-click-modal="fal
         el-form-item(label="预计开课时间")
             el-date-picker(v-model="form.beginTime" format="yyyy-MM" type="month" value-format="timestamp")
         el-form-item(label="课时")
-            el-input-number(v-model="form.classHour" :min="1")
+            el-input-number(v-model="form.classHour" :min="0.1" :step="0.1")
         el-form-item(label="备注")
             el-input(type="text" v-model="form.remark")
         el-form-item.form-action.margin-top-20
