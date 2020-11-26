@@ -16,7 +16,7 @@
     </resultMap>
 
 
-    <resultMap id="UnionResultMap" type="org.cdteam.employee.base.dobject.TrainPlanUnionDO">
+    <resultMap id="UnionResultMap" type="org.cdteam.employee.base.dobject.TeacherUnionDO">
         <id column="id" property="id" />
         <result column="employee_code" property="employeeCode" />
         <result column="teacher_name" property="teacherName" />
@@ -42,10 +42,10 @@
 
     <select id="selectUnionPage" resultMap="UnionResultMap">
         select
-        btp.id, employee_code, teacher_name, work_type, speak_course, team_work_time, btp.remark, btp.create_time, btp.update_time,
+        btp.id, btp.employee_code, teacher_name, btp.work_type, speak_course, team_work_time, btp.create_time, btp.update_time,
         real_name, on_job, org, dept, job_name, join_time
-        from base_train_plan btp
-        inner join base_employee be
+        from base_teacher btp
+        left join base_employee be
         on be.employee_code = btp.employee_code
         where btp.is_del = 0
         <if test="teacherName != null">
