@@ -6,8 +6,12 @@
                     el-input(v-model="form.teacherName")
                 el-form-item(label="类型")
                     el-input(v-model="form.workType")
-                el-form-item(label="所属机构")
+                el-form-item(label="部门")
+                    el-input(v-model="form.dept")
+                el-form-item(label="机构")
                     el-input(v-model="form.org")
+                el-form-item(label="岗位")
+                    el-input(v-model="form.jobName")
                 el-form-item
                     el-button(type="primary", native-type="submit") 查询
                     el-button(type="success" @click="handleEdit()") 新增
@@ -67,7 +71,7 @@ export default {
                     label: '类型'
                 },
                 org: {
-                    label: '所属机构'
+                    label: '机构'
                 },
                 dept: {
                     label: '部门',
