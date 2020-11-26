@@ -17,7 +17,7 @@ import java.util.List;
  */
 public interface TeacherService {
 
-    Pagination<TeacherDTO> page(Integer pageSize, Integer pageNum, String teacherName, String workType, String org);
+    Pagination<TeacherDTO> page(Integer pageSize, Integer pageNum, String teacherName, String workType, String dept, String org, String jobName);
 
     Integer save(TeacherCreateDTO employeeDTO);
 

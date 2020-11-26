@@ -18,5 +18,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TeacherMapper extends BaseMapper<TeacherEntity> {
 
-    IPage<TeacherUnionDO> selectUnionPage(Page<TeacherUnionDO> page, String teacherName, String workType);
+    IPage<TeacherUnionDO> selectUnionPage(Page<TeacherUnionDO> page, String teacherName, String workType, String dept, String org, String jobName);
 }

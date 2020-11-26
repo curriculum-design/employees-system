@@ -31,8 +31,8 @@ public class TeacherController {
     @ApiOperation("获取讲师列表")
     @GetMapping("/list")
     public Pagination<TeacherDTO> info(Integer pageSize, @RequestParam(defaultValue = "1") Integer pageNum
-            , String teacherName, String workType, String org) {
-        return teacherService.page(pageSize, pageNum, teacherName, workType, org);
+            , String teacherName, String workType, String dept, String org, String jobName) {
+        return teacherService.page(pageSize, pageNum, teacherName, workType, dept, org, jobName);
     }
 
     @ApiOperation("新增讲师")

@@ -41,11 +41,11 @@ public class TeacherServiceImpl implements TeacherService {
     private TeacherMapper mapper;
 
     @Override
-    public Pagination<TeacherDTO> page(Integer pageSize, Integer pageNum, String teacherName, String workType, String org) {
+    public Pagination<TeacherDTO> page(Integer pageSize, Integer pageNum, String teacherName, String workType, String dept, String org, String jobName) {
         Page<TeacherUnionDO> page = new Page<>();
         page.setCurrent(pageNum);
         page.setSize(pageSize);
-        IPage<TeacherUnionDO> employeeEntityIPage = mapper.selectUnionPage(page, teacherName, workType);
+        IPage<TeacherUnionDO> employeeEntityIPage = mapper.selectUnionPage(page, teacherName, workType, dept, org, jobName);
         List<TeacherUnionDO> records = employeeEntityIPage.getRecords();
         List<TeacherDTO> employeeDTOS = ListUtils.transferList(records, TeacherDTO.class);
         return new Pagination<>(pageNum, pageSize, employeeEntityIPage.getTotal(), employeeDTOS);

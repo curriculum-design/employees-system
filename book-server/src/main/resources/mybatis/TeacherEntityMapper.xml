@@ -54,5 +54,14 @@
         <if test="workType != null">
             and btp.work_type like concat('%', #{workType} ,'%')
         </if>
+        <if test="org != null">
+            and be.org like concat('%', #{org} ,'%')
+        </if>
+        <if test="dept != null">
+            and be.dept like concat('%', #{dept} ,'%')
+        </if>
+        <if test="jobName != null">
+            and be.job_name like concat('%', #{jobName} ,'%')
+        </if>
     </select>
 </mapper>
