@@ -37,7 +37,7 @@ cdteam.web:
 ---
 # 开发环境配置
 spring:
-  profiles: dev
+  profiles: remote
   datasource:
     url: jdbc:mysql://47.106.129.111:3306/employees?useOldAliasMetadataBehavior=true&useUnicode=true&zeroDateTimeBehavior=convertToNull&useSSL=false
     username: root
@@ -47,7 +47,7 @@ spring:
 ---
 # 本地运行环境
 spring:
-  profiles: local
+  profiles: dev
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/employees?useOldAliasMetadataBehavior=true&useUnicode=true&zeroDateTimeBehavior=convertToNull&useSSL=false
     username: root
