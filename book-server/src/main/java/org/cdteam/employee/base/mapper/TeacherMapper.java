@@ -1,5 +1,8 @@
 package org.cdteam.employee.base.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import org.cdteam.employee.base.dobject.TeacherUnionDO;
 import org.cdteam.employee.base.domain.TeacherEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.springframework.stereotype.Repository;
@@ -15,4 +18,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface TeacherMapper extends BaseMapper<TeacherEntity> {
 
+    IPage<TeacherUnionDO> selectUnionPage(Page<TeacherUnionDO> page, String teacherName, String workType);
 }

@@ -15,9 +15,44 @@
         <result column="is_del" property="isDel" />
     </resultMap>
 
+
+    <resultMap id="UnionResultMap" type="org.cdteam.employee.base.dobject.TrainPlanUnionDO">
+        <id column="id" property="id" />
+        <result column="employee_code" property="employeeCode" />
+        <result column="teacher_name" property="teacherName" />
+        <result column="work_type" property="workType" />
+        <result column="speak_course" property="speakCourse" />
+        <result column="team_work_time" property="teamWorkTime" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
+        <result column="is_del" property="isDel" />
+
+        <result column="real_name" property="realName" />
+        <result column="on_job" property="onJob" />
+        <result column="org" property="org" />
+        <result column="dept" property="dept" />
+        <result column="job_name" property="jobName" />
+        <result column="join_time" property="joinTime" />
+    </resultMap>
+
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
         id, employee_code, teacher_name, work_type, speak_course, team_work_time, create_time, update_time, is_del
     </sql>
 
+    <select id="selectUnionPage" resultMap="UnionResultMap">
+        select
+        btp.id, employee_code, teacher_name, work_type, speak_course, team_work_time, btp.remark, btp.create_time, btp.update_time,
+        real_name, on_job, org, dept, job_name, join_time
+        from base_train_plan btp
+        inner join base_employee be
+        on be.employee_code = btp.employee_code
+        where btp.is_del = 0
+        <if test="teacherName != null">
+            and btp.teacher_name like concat('%', #{teacherName} ,'%')
+        </if>
+        <if test="workType != null">
+            and btp.work_type like concat('%', #{workType} ,'%')
+        </if>
+    </select>
 </mapper>

@@ -11,7 +11,7 @@ import org.cdteam.employee.converter.LocalDateTimeDeserializer;
 import java.time.LocalDateTime;
 
 @Data
-public class TeacherDTO {
+public class TeacherDTO extends EmployeeDTO{
 
     /**
      * ID

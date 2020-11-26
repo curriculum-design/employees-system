@@ -60,9 +60,6 @@ export default {
         ...mapGetters['systemMapping'],
         headerMapping() {
             return {
-                id: {
-                    label: 'ID'
-                },
                 teacherName: {
                     label: '讲师姓名'
                 },
@@ -72,13 +69,22 @@ export default {
                 org: {
                     label: '所属机构'
                 },
-                createTime: {
-                    label: '新增时间',
-                    format: (t) => this.$format.date(t, 'yyyy-mm-dd')
+                dept: {
+                    label: '部门',
                 },
-                updateTime: {
-                    label: '修改时间',
-                    format: (t) => this.$format.date(t, 'yyyy-mm-dd')
+                jobName: {
+                    label: '岗位',
+                },
+                joinTime: {
+                    label: '入职时间',
+                    format: (t) => this.$format.date(t, 'yyyy-mm-dd'),
+                },
+                speakCourse: {
+                    label: '主讲课程',
+                },
+                teamWorkTime: {
+                    label: '认证/合作时间',
+                    format: (t) => this.$format.date(t, 'yyyy-mm-dd'),
                 },
             }
         },

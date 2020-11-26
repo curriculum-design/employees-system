@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
+import org.cdteam.employee.base.dobject.TeacherUnionDO;
 import org.cdteam.employee.base.domain.EmployeeEntity;
 import org.cdteam.employee.base.domain.TeacherEntity;
 import org.cdteam.employee.base.dto.EmployeeDTO;
@@ -41,18 +42,11 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public Pagination<TeacherDTO> page(Integer pageSize, Integer pageNum, String teacherName, String workType, String org) {
-        Page<TeacherEntity> page = new Page<>();
+        Page<TeacherUnionDO> page = new Page<>();
         page.setCurrent(pageNum);
         page.setSize(pageSize);
-        LambdaQueryWrapper<TeacherEntity> queryWrapper = Wrappers.lambdaQuery();
-        if (StringUtils.isNotBlank(teacherName)) {
-            queryWrapper.like(TeacherEntity::getTeacherName, teacherName);
-        }
-        if (StringUtils.isNotBlank(workType)) {
-            queryWrapper.eq(TeacherEntity::getWorkType, workType);
-        }
-        IPage<TeacherEntity> employeeEntityIPage = mapper.selectPage(page, queryWrapper);
-        List<TeacherEntity> records = employeeEntityIPage.getRecords();
+        IPage<TeacherUnionDO> employeeEntityIPage = mapper.selectUnionPage(page, teacherName, workType);
+        List<TeacherUnionDO> records = employeeEntityIPage.getRecords();
         List<TeacherDTO> employeeDTOS = ListUtils.transferList(records, TeacherDTO.class);
         return new Pagination<>(pageNum, pageSize, employeeEntityIPage.getTotal(), employeeDTOS);
     }
