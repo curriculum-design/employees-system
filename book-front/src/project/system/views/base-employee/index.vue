@@ -28,18 +28,21 @@
                 template(slot-scope="scope")
                     .icon-btn.el-icon-edit-outline(@click="handleEdit(scope.row.id)")
                     .icon-btn.el-icon-delete.danger(type="danger", @click="deleteConfirm(scope.row.id)")
+                    .icon-btn.el-icon-info(type="danger", @click="showDetail(scope.row.id)")
         template(slot="footer")
             el-pagination(:pageNum.sync="pageNum", :total="total", :pageSize="pageSize",@current-change="pageChangeHandler" @size-change="sizeChangeHandler" layout="total, sizes, prev, pager, next")
         EditForm(:show.sync="editShow", v-model="editForm", @submit="submitHandler" v-loading.body="editLoading")
+        DetailForm(:show.sync="detailShow", v-if="detailShow" v-model="editForm", @submit="submitHandler" v-loading.body="editLoading")
 </template>
 
 <script>
 import CurdTableMix from '@/utils/mixins/curd-table-mix.js'
 import {mapGetters} from 'vuex'
 import EditForm from './form'
+import DetailForm from './detail'
 
 export default {
-    components: {EditForm},
+    components: {EditForm, DetailForm},
     mixins: [CurdTableMix('$baseEmployeeService')],
     data() {
         return {

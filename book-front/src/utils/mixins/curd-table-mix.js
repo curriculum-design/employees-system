@@ -14,6 +14,7 @@ export default (serviceName) => {
                 total: 0,
                 loading: false,
                 editShow: false,
+                detailShow: false,
                 editForm: {},
                 importDialogShow: false,
                 importData: [],
@@ -45,6 +46,17 @@ export default (serviceName) => {
                 this.editForm = editForm
                 this.loading = false
                 this.editShow = true
+            },
+            async showDetail(id) {
+                let editForm = this.$options.data().editForm
+                if (id !== undefined) {
+                    this.loading = true
+                    let loadEditForm = await this.get(id)
+                    editForm = {...editForm, ...loadEditForm}
+                }
+                this.editForm = editForm
+                this.loading = false
+                this.detailShow = true
             },
             deleteConfirm(id) {
                 return this.delConfirm(id).then(() => {

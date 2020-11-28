@@ -4,7 +4,7 @@
       el-table.margin-bottom-10(:show-summary="showSummary", :data="currentData" ref="table", :height="height", :border="border", :summary-method="summaryMethod", @selection-change="a => $emit('selection-change', a)" :highlightCurrentRow="highlightCurrentRow", @row-click="rowClickHandler")
         slot
       .flex-between
-        el-pagination(:pageNum.sync="pageNum", :total="total", :pageSize="pageSize",
+        el-pagination(:currentPage.sync="pageNum", :total="total", :pageSize="pageSize",
         :page-sizes="[10, 20, 30, 40, 50, 9999]",
         @size-change="sizeChangeHandler" layout="total, sizes, prev, pager, next", v-if="pagination")
         slot(name="after-page")
