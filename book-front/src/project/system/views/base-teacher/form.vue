@@ -36,7 +36,6 @@ export default {
     },
     methods: {
         employeeChange: function(code) {
-            debugger
             if (code) {
                 const v = this.employeeList.filter(d => d.employeeCode === code).pop()
                 this.form.teacherName = v.realName
