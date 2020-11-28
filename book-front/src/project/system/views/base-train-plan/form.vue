@@ -1,10 +1,9 @@
 <template lang="pug">
 el-dialog(title="编辑", :visible.sync="dialogShow", :close-on-click-modal="false", :append-to-body="true")
     el-form(v-model="form" @submit.prevent.native="submitHandler()" label-width="120px")
-        el-form-item(label="工号/员工姓名")
-            el-select(v-model="form.employeeId" filterable placeholder="请选择" style="width:50%")
+        el-form-item(label="工号/员工姓名" v-if="form.id")
+            el-select(v-model="form.employeeId" filterable placeholder="请选择")
                 el-option(v-for="item in employeeList" :key="item.id" :label="item.employeeCode + '/' + item.realName" :value="item.id")
-            el-button(type="primary", @click="selectEmployee" style="margin-left:10px") 选择员工
         el-form-item(label="课程名称")
             el-input(v-model="form.courseName")
         el-form-item(label="培训形式")
@@ -17,11 +16,11 @@ el-dialog(title="编辑", :visible.sync="dialogShow", :close-on-click-modal="fal
             el-input-number(v-model="form.classHour" :min="0.1" :step="0.1")
         el-form-item(label="备注")
             el-input(type="text" v-model="form.remark")
+        RefEmployeeForm(v-if="!!!form.id" ref="refEmployeeForm" v-model="form")
         el-form-item.form-action.margin-top-20
+            el-button(v-if="!!!form.id" type="primary", @click="$refs.refEmployeeForm.selectAttachment()") 选择员工
             el-button(type="primary", @click="dialogShow = false") 取消
             el-button(type="success" native-type="submit") 保存
-    el-dialog(title="员工选择" :visible.sync="dialogVisible" width="45%" :close-on-click-modal="false", :append-to-body="true")
-        RefEmployeeForm(v-model="form" v-if="dialogVisible" @closeDialog="closeDialog" class="dialog")
 </template>
 
 <script>

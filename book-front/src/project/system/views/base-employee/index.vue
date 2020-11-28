@@ -59,6 +59,7 @@ export default {
                 createTime: '',
                 updateTime: '',
                 isDel: '',
+                refEmployeeAssemblyList: []
             },
         }
     },

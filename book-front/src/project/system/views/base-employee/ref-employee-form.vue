@@ -1,136 +1,120 @@
 <template lang="pug">
-    ContentBody(title="")
-        LocalTable.mini-table(:data="tableData" ref="multipleTable", :pagination="true" height="400")
-            el-table-column(type="selection" width="55")
-            el-table-column(:prop="key", :key="key", :label="value.label || value", v-for="value, key in headerMapping", :show-overflow-tooltip="true", :width="value.width")
-                ColumnContent(slot-scope="{row}" :columnDefine="value", :row="row", :value-key="key" :renderContent="value.render")
-        .form-action.margin-top-20
-            ImportButtonWithDialog(@inputData="inputData", :saveApi="checkSelect", :options="importOptions")
-            el-button(type="primary" @click="selectGoods") 确定
-            el-button(@click="handleClose()" ) 取消
+    div()
+        el-form-item(label="员工列表" prop="refEmployeeAssemblyList")
+            el-table(:data="form.refEmployeeAssemblyList" border)
+                el-table-column(label="员工姓名" prop="realName")
+                el-table-column(label="是否在职" prop="onJob")
+                el-table-column(label="工种" prop="workType")
+                el-table-column(label="机构" prop="org")
+                el-table-column(label="部门" prop="dept")
+                el-table-column(label="岗位" prop="jobName")
+                el-table-column(label="入职时间" prop="joinTime")
+        div()
+            el-dialog(title="员工选择" :visible.sync="dialogVisible" width="620px" :close-on-click-modal="false", :append-to-body="true")
+                refEmployeeFromList(v-model="form" @closeDialog="closeDialog" class="dialog")
+
+
 </template>
 
 <script>
-import CurdTableMix from '@/utils/mixins/curd-table-mix.js'
-import {mapGetters} from 'vuex'
+import formDialogMix from '@/utils/mixins/form-dialog-mix'
+import refEmployeeFromList from './ref-employee-form2'
 export default {
-    props: ['show', 'value'],
-    components: {},
-    mixins: [CurdTableMix('$baseEmployeeService')],
+    components: {
+        refEmployeeFromList
+    },
+    mixins: [formDialogMix],
+    props: {
+        'goodsList': {
+            type: Array,
+            default: function() {
+                return []
+            }
+        },
+        'disabled':
+            {default: false},
+        'requiredAttachments':
+            {default: false},
+        'disableItem': {
+            type: Array,
+            default: function() {
+                return []
+            }
+        },
+        'enableItem': {
+            type: Array,
+            default: function() {
+                return []
+            }
+        }
+    },
     data() {
         return {
-            form: {
-                related: 0
-            },
+            dialogVisible: false,
+            goodsList2: null,
+            mygoodsList: null,
         }
     },
     methods: {
-        async checkSelect(data) {
-            this.tableData.filter(d => d.employeeCode === data.employeeCode).map(row => {
-                this.$refs.multipleTable.tableComponent.toggleRowSelection(row)
+        closeDialog() {
+            this.dialogVisible = false
+        },
+        changeEmployee(row) {
+            let goods = this.goodsList.filter(o => o.id === row.childrenEmployeeId).pop()
+            row.goodsName = goods.goodsName
+            row.goodsSpec = goods.goodsSpec
+            row.goodsUnit = goods.goodsUnit
+        },
+        selectAttachment() {
+            this.dialogVisible = true
+        },
+        addAttachment() {
+            this.form.refEmployeeAssemblyList.push({})
+            // this.dialogVisible = true
+            // console.log(this.form)
+        },
+        removeAttachment(row) {
+            this.form.refEmployeeAssemblyList.splice(this.form.refEmployeeAssemblyList.indexOf(row), 1)
+        },
+        uploadAfterHandler(row) {
+            this.$set(row, 'attachmentUrl', row.uploadResult[0])
+            delete row.uploadResult
+        },
+        async check() {
+            let _this = this
+            return new Promise(function(resolve, reject) {
+                let errorList = _this.form.refEmployeeAssemblyList
+                    .filter(o => _this.required(o.childrenEmployeeId, 'childrenEmployeeId'))
+                if (errorList.length > 0) {
+                    _this.$message.error('物料不能为空')
+                    reject()
+                } else {
+                    resolve()
+                }
+                errorList = _this.form.refEmployeeAssemblyList
+                    .filter(o => _this.required(o.num, 'num'))
+                if (errorList.length > 0) {
+                    _this.$message.error('数量不能为空')
+                    reject()
+                } else {
+                    resolve()
+                }
             })
-            return {}
         },
-        async initLoad() {
-            // this.$refs.multipleTable.sizeChangeHandler(20)
-            this.tableData = await this.$baseEmployeeService.all({}, {method: 'get'})
-        },
-        selectGoods() {
-            this.$emit('closeDialog')
-            this.goodsList2 = this.$refs.multipleTable.tableComponent.selection
-            for (let i = 0; i < this.goodsList2.length; i++) {
-                let obj = {
-                    childrenGoodsId: this.goodsList2[i].id,
-                    createTime: this.goodsList2[i].createTime,
-                    goodsId: this.goodsList2[i].goodsId,
-                    goodsName: this.goodsList2[i].goodsName,
-                    goodsNo: this.goodsList2[i].goodsNo,
-                    goodsSpec: this.goodsList2[i].goodsSpec,
-                    goodsUnit: this.goodsList2[i].goodsUnit,
-                    status: this.goodsList2[i].status,
-                    updateTime: this.goodsList2[i].updateTime
-                }
-                // console.log(obj)
-                // 判断是否存在  如果存在  则不增加
-                let goodsIds = this.dataForm.refGoodsAssemblyList.map(o => o.childrenGoodsId).filter(o => !!o)
-                if (!goodsIds.includes(obj.childrenGoodsId)) {
-                    this.dataForm.refGoodsAssemblyList.push(obj)
-                }
+        required(v, key) {
+            if ((v == null || v === '') && !this.disableItem.includes(key)) {
+                return true
             }
-        },
-        handleClose() {
-            this.$confirm('确认关闭？')
-                .then(_ => {
-                    this.$emit('closeDialog')
-                    this.toggleSelection()
-                })
-                .catch(_ => {})
-        },
-        importObj(data) {
-            data.parentId = this.parentId
-            return this.api.postJson('import-assembly', data)
-        },
-    },
-    computed: {
-        dataForm: {
-            get() {
-                return this.value
-            },
-            set(val) {
-                this.$emit('input', val)
-            },
-        },
-        ...mapGetters['systemMapping'],
-        headerMapping() {
-            return {
-                employeeCode: {
-                    label: '工号',
-                },
-                realName: {
-                    label: '员工姓名',
-                },
-                onJob: {
-                    label: '是否在职',
-                },
-                workType: {
-                    label: '工种',
-                },
-                org: {
-                    label: '机构',
-                },
-                dept: {
-                    label: '部门',
-                },
-                jobName: {
-                    label: '岗位',
-                },
-                joinTime: {
-                    label: '入职时间',
-                    format: (t) => this.$format.date(t, 'yyyy-mm-dd'),
-                },
-            }
-        },
-        exportOptions() {
-            return {
-                headerMapping: this.headerMapping
-            }
-        },
-        importOptions() {
-            return {
-                headerMapping: {
-                    '人员编码': 'employeeCode',
-                }
-            }
+            return false
         }
-    },
+    }
 }
 </script>
 <style lang="less" rel="stylesheet/less">
-.refGoodsListShow .el-dialog__body {
-    padding-top: 0;
+.back{
+    background-color: white;
 }
-.body{
-    padding: 10px 20px;
+.dialog{
+    margin: -30px 15px 10px 15px;
 }
 </style>
-
