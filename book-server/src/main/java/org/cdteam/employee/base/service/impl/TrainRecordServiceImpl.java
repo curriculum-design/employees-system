@@ -1,6 +1,5 @@
 package org.cdteam.employee.base.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -19,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * <p>
@@ -37,12 +37,13 @@ public class TrainRecordServiceImpl implements TrainRecordService {
     @Override
     public Pagination<TrainRecordDTO> page(Integer pageSize, Integer pageNum
             , String realName, String org, String dept, String jobName, String courseName, String makeCourse
-            , LocalDateTime beginTime, LocalDateTime endTime, String teacherName) {
+            , LocalDateTime beginTime, LocalDateTime endTime, String teacherName, Boolean byTeacher) {
         Page<TrainRecordUnionDO> page = new Page<>();
         page.setCurrent(pageNum);
         page.setSize(pageSize);
-        IPage<TrainRecordUnionDO> trainRecordEntityIPage = mapper.selectUnionPage(page, realName, org, dept, jobName
-                , courseName, makeCourse, beginTime, endTime, teacherName);
+        IPage<TrainRecordUnionDO> trainRecordEntityIPage = Optional.ofNullable(byTeacher)
+                .map(d -> mapper.selectUnionPageGroupTeacher(page, teacherName))
+                .orElseGet(() -> mapper.selectUnionPage(page, realName, org, dept, jobName, courseName, makeCourse, beginTime, endTime, teacherName));
         List<TrainRecordUnionDO> records = trainRecordEntityIPage.getRecords();
         List<TrainRecordDTO> trainRecordDTOS = ListUtils.transferList(records, TrainRecordDTO.class);
         return new Pagination<>(pageNum, pageSize, trainRecordEntityIPage.getTotal(), trainRecordDTOS);

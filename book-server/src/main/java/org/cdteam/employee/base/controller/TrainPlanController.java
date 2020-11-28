@@ -14,6 +14,7 @@ import org.cdteam.spring.cloud.starter.context.bean.Pagination;
 import org.cdteam.spring.cloud.starter.context.constant.ResponseCodeEnum;
 import org.cdteam.spring.cloud.starter.context.exception.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -76,6 +77,14 @@ public class TrainPlanController {
     @ApiOperation("新增培训计划")
     @PostMapping("/save")
     public Integer save(@RequestBody TrainPlanCreateDTO trainPlanDTO) {
+        if (!CollectionUtils.isEmpty(trainPlanDTO.getRefEmployeeAssemblyList())) {
+            trainPlanDTO.getRefEmployeeAssemblyList().forEach(d -> {
+                TrainPlanCreateDTO trainPlanCreateDTO = BeanCopyUtils.transferBean(trainPlanDTO, TrainPlanCreateDTO.class);
+                trainPlanCreateDTO.setEmployeeId(d.getId());
+                trainPlanService.save(trainPlanCreateDTO);
+            });
+            return trainPlanDTO.getRefEmployeeAssemblyList().size();
+        }
         return trainPlanService.save(trainPlanDTO);
     }
 

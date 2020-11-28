@@ -12,6 +12,7 @@ import org.cdteam.spring.cloud.starter.context.bean.Pagination;
 import org.cdteam.spring.cloud.starter.context.constant.ResponseCodeEnum;
 import org.cdteam.spring.cloud.starter.context.exception.AppException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -40,9 +41,9 @@ public class TrainRecordController {
     @GetMapping("/list")
     public Pagination<TrainRecordDTO> info(Integer pageSize, @RequestParam(defaultValue = "1") Integer pageNum
             , String realName, String org, String dept, String jobName, String courseName, String makeCourse
-            , LocalDateTime beginTime, LocalDateTime endTime, String teacherName) {
+            , LocalDateTime beginTime, LocalDateTime endTime, String teacherName, Boolean byTeacher) {
         return trainRecordService.page(pageSize, pageNum, realName, org, dept, jobName
-                , courseName, makeCourse, beginTime, endTime, teacherName);
+                , courseName, makeCourse, beginTime, endTime, teacherName, byTeacher);
     }
 
     @ApiOperation("新增培训计划")
@@ -83,6 +84,14 @@ public class TrainRecordController {
     @ApiOperation("新增培训计划")
     @PostMapping("/save")
     public Integer save(@RequestBody TrainRecordCreateDTO trainRecordDTO) {
+        if (!CollectionUtils.isEmpty(trainRecordDTO.getRefEmployeeAssemblyList())) {
+            trainRecordDTO.getRefEmployeeAssemblyList().forEach(d -> {
+                TrainRecordCreateDTO trainRecordCreateDTO = BeanCopyUtils.transferBean(trainRecordDTO, TrainRecordCreateDTO.class);
+                trainRecordCreateDTO.setEmployeeId(d.getId());
+                trainRecordService.save(trainRecordCreateDTO);
+            });
+            return trainRecordDTO.getRefEmployeeAssemblyList().size();
+        }
         return trainRecordService.save(trainRecordDTO);
     }
 

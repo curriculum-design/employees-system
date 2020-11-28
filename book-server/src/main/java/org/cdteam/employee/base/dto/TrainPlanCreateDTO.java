@@ -7,6 +7,7 @@ import org.cdteam.employee.converter.LocalDateTimeConverter;
 import org.cdteam.employee.converter.LocalDateTimeDeserializer;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class TrainPlanCreateDTO {
@@ -51,4 +52,9 @@ public class TrainPlanCreateDTO {
      * 备注
      */
     private String remark;
+
+    /**
+     * 批量选择人员时候会有
+     */
+    private List<EmployeeCreateDTO> refEmployeeAssemblyList;
 }

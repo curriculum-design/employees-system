@@ -23,4 +23,6 @@ public interface TrainRecordMapper extends BaseMapper<TrainRecordEntity> {
     IPage<TrainRecordUnionDO> selectUnionPage(Page<TrainRecordUnionDO> page
             , String realName, String org, String dept, String jobName, String courseName, String makeCourse
             , LocalDateTime beginTime, LocalDateTime endTime, String teacherName);
+
+    IPage<TrainRecordUnionDO> selectUnionPageGroupTeacher(Page<TrainRecordUnionDO> page, String teacherName);
 }

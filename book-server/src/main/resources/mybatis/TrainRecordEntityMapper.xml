@@ -91,4 +91,14 @@
             and btp.teacher_name like concat('%', #{teacherName} ,'%')
         </if>
     </select>
+    <select id="selectUnionPageGroupTeacher" resultMap="UnionResultMap">
+        select
+        btp.id, employee_id, course_name, train_style, make_course, begin_time, end_time, class_hour, teacher_id, teacher_name, rate, score, btp.remark, btp.create_time, btp.update_time
+        from base_train_record btp
+        where btp.is_del = 0
+        <if test="teacherName != null">
+            and btp.teacher_name like concat('%', #{teacherName} ,'%')
+        </if>
+        group by course_name, begin_time
+    </select>
 </mapper>

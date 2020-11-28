@@ -47,6 +47,7 @@ export default {
     methods: {
         async initLoad() {
             this.form.teacherName = this.p
+            this.form.byTeacher = true
             this.filter(this.form)
         },
         async uploadSave(data) {

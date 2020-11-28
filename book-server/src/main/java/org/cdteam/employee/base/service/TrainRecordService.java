@@ -19,7 +19,7 @@ public interface TrainRecordService {
 
     Pagination<TrainRecordDTO> page(Integer pageSize, Integer pageNum
             , String realName, String org, String dept, String jobName, String courseName, String makeCourse
-            , LocalDateTime beginTime, LocalDateTime endTime, String teacherName);
+            , LocalDateTime beginTime, LocalDateTime endTime, String teacherName, Boolean byTeacher);
 
     Integer save(TrainRecordCreateDTO employeeDTO);
 
