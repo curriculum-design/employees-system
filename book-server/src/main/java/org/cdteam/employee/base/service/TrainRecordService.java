@@ -18,7 +18,7 @@ import java.util.List;
 public interface TrainRecordService {
 
     Pagination<TrainRecordDTO> page(Integer pageSize, Integer pageNum
-            , String realName, String org, String dept, String jobName, String courseName, String makeCourse
+            , String realName, String org, String dept, String jobName, String courseNo, String courseName, String makeCourse
             , LocalDateTime beginTime, LocalDateTime endTime, String teacherName, Boolean byTeacher);
 
     Integer save(TrainRecordCreateDTO employeeDTO);
@@ -30,4 +30,8 @@ public interface TrainRecordService {
     TrainRecordDTO getById(Long id);
 
     Integer uploadSave(TrainRecordCreateDTO employeeDTO);
+
+    Boolean existCourseNo(String courseNo);
+
+    void deleteByCourseNo(String courseNo);
 }

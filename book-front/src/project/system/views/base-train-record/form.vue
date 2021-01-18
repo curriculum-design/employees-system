@@ -4,6 +4,8 @@ el-dialog(title="编辑", :visible.sync="dialogShow", :close-on-click-modal="fal
         el-form-item(label="工号/员工姓名" v-if="form.id")
             el-select(v-model="form.employeeId" filterable placeholder="请选择")
                 el-option(v-for="item in employeeList" :key="item.id" :label="item.employeeCode + '/' + item.realName" :value="item.id")
+        el-form-item(label="课程编号")
+            el-input(v-model="form.courseNo")
         el-form-item(label="课程名称")
             el-input(v-model="form.courseName")
         el-form-item(label="培训形式")

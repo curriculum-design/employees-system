@@ -81,6 +81,9 @@ export default {
         ...mapGetters['systemMapping'],
         headerMapping() {
             return {
+                courseNo: {
+                    label: '课程编号'
+                },
                 courseName: {
                     label: '课程名称'
                 },
@@ -118,6 +121,7 @@ export default {
             return {
                 headerMapping: {
                     '工号': 'employeeCode',
+                    '课程编号': 'courseNo',
                     '课程名称': 'courseName',
                     '培训形式': 'trainStyle',
                     '开设部门/机构': 'makeCourse',

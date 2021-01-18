@@ -10,6 +10,8 @@
                     el-input(v-model="form.dept")
                 el-form-item(label="岗位")
                     el-input(v-model="form.jobName")
+                el-form-item(label="课程编号")
+                    el-input(v-model="form.courseNo")
                 el-form-item(label="课程名称")
                     el-input(v-model="form.courseName")
                 el-form-item(label="开设部门/机构")
@@ -39,6 +41,7 @@
 import CurdTableMix from '@/utils/mixins/curd-table-mix.js'
 import {mapGetters} from 'vuex'
 import EditForm from './form'
+
 export default {
     components: {EditForm},
     mixins: [CurdTableMix('$baseTrainRecordService')],
@@ -47,6 +50,7 @@ export default {
             editForm: {
                 id: '',
                 employeeId: '',
+                courseNo: '',
                 courseName: '',
                 trainStyle: '',
                 makeCourse: '',
@@ -68,7 +72,14 @@ export default {
         async uploadSave(data) {
             return this.api.postJson('upload-save', data)
         },
-        submitHandler(val) {
+        async submitHandler(val) {
+            if (!val.id) {
+                // 如果ID 不为空, 判断数据的CourseNo 是否存在
+                let res = await this.$baseTrainRecordService.existCourseNo({'courseNo': val.courseNo}, {method: 'get'})
+                if (res) {
+                    await this.$confirm('该课程编号的数据已存在, 确认保存并将之前数据全部删除吗?')
+                }
+            }
             this.submit(val, 'id').then(data => {
                 this.editShow = false
                 this.loadData()
@@ -118,6 +129,9 @@ export default {
                 jobName: {
                     label: '岗位',
                 },
+                courseNo: {
+                    label: '课程编号'
+                },
                 courseName: {
                     label: '课程名称'
                 },
@@ -161,6 +175,7 @@ export default {
             return {
                 headerMapping: {
                     '工号': 'employeeCode',
+                    '课程编号': 'courseNo',
                     '课程名称': 'courseName',
                     '培训形式': 'trainStyle',
                     '开设部门/机构': 'makeCourse',

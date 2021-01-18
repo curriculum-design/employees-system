@@ -6,6 +6,7 @@
     <resultMap id="BaseResultMap" type="org.cdteam.employee.base.domain.TrainRecordEntity">
         <id column="id" property="id" />
         <result column="employee_id" property="employeeId" />
+        <result column="course_no" property="courseNo" />
         <result column="course_name" property="courseName" />
         <result column="train_style" property="trainStyle" />
         <result column="make_course" property="makeCourse" />
@@ -25,6 +26,7 @@
     <resultMap id="UnionResultMap" type="org.cdteam.employee.base.dobject.TrainRecordUnionDO">
         <id column="id" property="id" />
         <result column="employee_id" property="employeeId" />
+        <result column="course_no" property="courseNo" />
         <result column="course_name" property="courseName" />
         <result column="train_style" property="trainStyle" />
         <result column="make_course" property="makeCourse" />
@@ -52,12 +54,12 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, employee_id, course_name, train_style, make_course, begin_time, end_time, class_hour, teacher_id, teacher_name, rate, score, remark, create_time, update_time, is_del
+        id, employee_id, course_no, course_name, train_style, make_course, begin_time, end_time, class_hour, teacher_id, teacher_name, rate, score, remark, create_time, update_time, is_del
     </sql>
 
     <select id="selectUnionPage" resultMap="UnionResultMap">
         select
-        btp.id, employee_id, course_name, train_style, make_course, begin_time, end_time, class_hour, teacher_id, teacher_name, rate, score, btp.remark, btp.create_time, btp.update_time,
+        btp.id, employee_id, course_no, course_name, train_style, make_course, begin_time, end_time, class_hour, teacher_id, teacher_name, rate, score, btp.remark, btp.create_time, btp.update_time,
         employee_code, real_name, on_job, work_type, org, dept, job_name, join_time
         from base_train_record btp
         inner join base_employee be
@@ -75,6 +77,9 @@
         <if test="jobName != null">
             and be.job_name like concat('%', #{jobName} ,'%')
         </if>
+        <if test="courseNo != null">
+            and btp.course_no like concat('%', #{courseNo} ,'%')
+        </if>
         <if test="courseName != null">
             and btp.course_name like concat('%', #{courseName} ,'%')
         </if>
@@ -90,6 +95,7 @@
         <if test="teacherName != null">
             and btp.teacher_name like concat('%', #{teacherName} ,'%')
         </if>
+        order by btp.id desc
     </select>
     <select id="selectUnionPageGroupTeacher" resultMap="UnionResultMap">
         select

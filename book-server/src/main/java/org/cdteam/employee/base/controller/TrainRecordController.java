@@ -40,10 +40,10 @@ public class TrainRecordController {
     @ApiOperation("获取培训计划列表")
     @GetMapping("/list")
     public Pagination<TrainRecordDTO> info(Integer pageSize, @RequestParam(defaultValue = "1") Integer pageNum
-            , String realName, String org, String dept, String jobName, String courseName, String makeCourse
+            , String realName, String org, String dept, String jobName, String courseNo, String courseName, String makeCourse
             , LocalDateTime beginTime, LocalDateTime endTime, String teacherName, Boolean byTeacher) {
         return trainRecordService.page(pageSize, pageNum, realName, org, dept, jobName
-                , courseName, makeCourse, beginTime, endTime, teacherName, byTeacher);
+                , courseNo, courseName, makeCourse, beginTime, endTime, teacherName, byTeacher);
     }
 
     @ApiOperation("新增培训计划")
@@ -82,9 +82,19 @@ public class TrainRecordController {
     }
 
     @ApiOperation("新增培训计划")
+    @GetMapping("/exist-course-no")
+    public Boolean checkCourseNo(@RequestParam String courseNo) {
+        return trainRecordService.existCourseNo(courseNo);
+    }
+
+    @ApiOperation("新增培训计划")
     @PostMapping("/save")
     public Integer save(@RequestBody TrainRecordCreateDTO trainRecordDTO) {
         if (!CollectionUtils.isEmpty(trainRecordDTO.getRefEmployeeAssemblyList())) {
+
+            String courseNo = trainRecordDTO.getCourseNo();
+            trainRecordService.deleteByCourseNo(courseNo);
+
             trainRecordDTO.getRefEmployeeAssemblyList().forEach(d -> {
                 TrainRecordCreateDTO trainRecordCreateDTO = BeanCopyUtils.transferBean(trainRecordDTO, TrainRecordCreateDTO.class);
                 trainRecordCreateDTO.setEmployeeId(d.getId());
