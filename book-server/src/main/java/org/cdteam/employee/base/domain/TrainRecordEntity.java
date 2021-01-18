@@ -40,6 +40,11 @@ public class TrainRecordEntity implements Serializable {
     private Long employeeId;
 
     /**
+     * 课程编号
+     */
+    private String courseNo;
+
+    /**
      * 课程名称
      */
     private String courseName;

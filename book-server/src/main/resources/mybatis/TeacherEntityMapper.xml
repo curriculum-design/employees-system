@@ -63,5 +63,6 @@
         <if test="jobName != null">
             and be.job_name like concat('%', #{jobName} ,'%')
         </if>
+        order by btp.id desc
     </select>
 </mapper>

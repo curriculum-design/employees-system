@@ -23,6 +23,11 @@ public class TrainRecordDTO extends EmployeeDTO{
      */
     private Long employeeId;
 
+
+    /**
+     * 课程编号
+     */
+    private String courseNo;
     /**
      * 课程名称
      */

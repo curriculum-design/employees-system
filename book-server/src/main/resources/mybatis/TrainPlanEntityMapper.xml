@@ -80,5 +80,6 @@
         <if test="endTime != null">
             and btp.begin_time <![CDATA[<=]]> #{endTime}
         </if>
+        order by btp.id desc
     </select>
 </mapper>

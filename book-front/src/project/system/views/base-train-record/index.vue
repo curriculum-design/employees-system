@@ -77,7 +77,7 @@ export default {
                 // 如果ID 不为空, 判断数据的CourseNo 是否存在
                 let res = await this.$baseTrainRecordService.existCourseNo({'courseNo': val.courseNo}, {method: 'get'})
                 if (res) {
-                    await this.$confirm('该课程编号的数据已存在, 确认保存并将之前数据全部删除吗?')
+                    await this.$confirm('是否确定修改?')
                 }
             }
             this.submit(val, 'id').then(data => {

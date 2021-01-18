@@ -18,6 +18,11 @@ public class TrainRecordUploadDTO {
     private String employeeCode;
 
     /**
+     * 课程编号
+     */
+    private String courseNo;
+
+    /**
      * 课程名称
      */
     private String courseName;
