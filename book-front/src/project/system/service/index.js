@@ -20,3 +20,4 @@ Vue.prototype.$baseEmployeeService = require('./BaseEmployeeService.js').default
 Vue.prototype.$baseTrainRecordService = require('./BaseTrainRecordService.js').default
 Vue.prototype.$baseTrainPlanService = require('./BaseTrainPlanService.js').default
 Vue.prototype.$baseTeacherService = require('./BaseTeacherService.js').default
+Vue.prototype.$baseCourseService = require('./BaseCourseService.js').default

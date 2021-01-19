@@ -8,70 +8,85 @@
                 el-table-column(label="机构" prop="org")
                 el-table-column(label="部门" prop="dept")
                 el-table-column(label="岗位" prop="jobName")
-                el-table-column(label="入职时间" prop="joinTime")
+                el-table-column(label="入职时间" width="100px")
+                    template(slot-scope="scope") {{$format.date(scope.row.joinTime, "yyyy-mm-dd")}}
         div()
-            el-dialog(title="员工选择" :visible.sync="dialogVisible" width="620px" :close-on-click-modal="false", :append-to-body="true")
-                refEmployeeFromList(v-model="form" @closeDialog="closeDialog" class="dialog")
-
-
+            el-dialog(title="员工选择" :visible.sync="dialogVisible" width="700px" :close-on-click-modal="false", :append-to-body="true")
+                el-select(v-model="state" multiple filterable remote reserve-keyword placeholder="请输入关键词" :remote-method="querySearchAsync" @change="handleChange")
+                    el-option(v-for="item in employees" :key="item.id" :label="item.realName" :value="item.id")
+                el-table(:data="tableData" border)
+                    el-table-column(label="员工姓名" prop="realName")
+                    el-table-column(label="是否在职" prop="onJob")
+                    el-table-column(label="工种" prop="workType")
+                    el-table-column(label="机构" prop="org")
+                    el-table-column(label="部门" prop="dept")
+                    el-table-column(label="岗位" prop="jobName")
+                    el-table-column(label="入职时间" width="100px")
+                        template(slot-scope="scope") {{$format.date(scope.row.joinTime, "yyyy-mm-dd")}}
+                    el-table-column(width="60px")
+                        template(slot-scope="scope")
+                            .icon-btn.el-icon-delete.danger(type="danger", @click="tableData.splice(scope.$index, 1)")
+                .form-action.margin-top-20
+                    el-button(type="primary", @click="closeDialog()") 取消
+                    el-button(type="success", @click="selectEmployee") 保存
 </template>
 
 <script>
 import formDialogMix from '@/utils/mixins/form-dialog-mix'
 import refEmployeeFromList from './ref-employee-form2'
+
 export default {
     components: {
         refEmployeeFromList
     },
     mixins: [formDialogMix],
-    props: {
-        'goodsList': {
-            type: Array,
-            default: function() {
-                return []
-            }
-        },
-        'disabled':
-            {default: false},
-        'requiredAttachments':
-            {default: false},
-        'disableItem': {
-            type: Array,
-            default: function() {
-                return []
-            }
-        },
-        'enableItem': {
-            type: Array,
-            default: function() {
-                return []
-            }
-        }
-    },
+    props: {},
     data() {
         return {
             dialogVisible: false,
-            goodsList2: null,
-            mygoodsList: null,
+            state: '',
+            employees: [],
+            tableData: []
+        }
+    },
+    created() {
+        let employees = this.form.refEmployeeAssemblyList
+        if (employees) {
+            this.tableData = this.form.refEmployeeAssemblyList
         }
     },
     methods: {
+        selectEmployee() {
+            if (this.tableData.length === 0) {
+                this.$message.error('请先筛选你要选择的员工')
+                return
+            }
+            this.closeDialog()
+            this.form.refEmployeeAssemblyList = this.tableData
+        },
+        handleChange(item) {
+            if (item) {
+                item.forEach(v => {
+                    let value = this.employees.filter(i => i.id === v).pop()
+                    let tableValue = this.tableData.filter(i => i.id === v).pop()
+                    if (!tableValue) {
+                        this.tableData.push(value)
+                    }
+                })
+            }
+        },
+        async querySearchAsync(queryString, cb) {
+            // 搜索人员
+            this.employees = await this.$baseEmployeeService.search({q: queryString}, {method: 'get'})
+        },
         closeDialog() {
             this.dialogVisible = false
-        },
-        changeEmployee(row) {
-            let goods = this.goodsList.filter(o => o.id === row.childrenEmployeeId).pop()
-            row.goodsName = goods.goodsName
-            row.goodsSpec = goods.goodsSpec
-            row.goodsUnit = goods.goodsUnit
         },
         selectAttachment() {
             this.dialogVisible = true
         },
         addAttachment() {
             this.form.refEmployeeAssemblyList.push({})
-            // this.dialogVisible = true
-            // console.log(this.form)
         },
         removeAttachment(row) {
             this.form.refEmployeeAssemblyList.splice(this.form.refEmployeeAssemblyList.indexOf(row), 1)
@@ -79,42 +94,16 @@ export default {
         uploadAfterHandler(row) {
             this.$set(row, 'attachmentUrl', row.uploadResult[0])
             delete row.uploadResult
-        },
-        async check() {
-            let _this = this
-            return new Promise(function(resolve, reject) {
-                let errorList = _this.form.refEmployeeAssemblyList
-                    .filter(o => _this.required(o.childrenEmployeeId, 'childrenEmployeeId'))
-                if (errorList.length > 0) {
-                    _this.$message.error('物料不能为空')
-                    reject()
-                } else {
-                    resolve()
-                }
-                errorList = _this.form.refEmployeeAssemblyList
-                    .filter(o => _this.required(o.num, 'num'))
-                if (errorList.length > 0) {
-                    _this.$message.error('数量不能为空')
-                    reject()
-                } else {
-                    resolve()
-                }
-            })
-        },
-        required(v, key) {
-            if ((v == null || v === '') && !this.disableItem.includes(key)) {
-                return true
-            }
-            return false
         }
     }
 }
 </script>
 <style lang="less" rel="stylesheet/less">
-.back{
+.back {
     background-color: white;
 }
-.dialog{
+
+.dialog {
     margin: -30px 15px 10px 15px;
 }
 </style>

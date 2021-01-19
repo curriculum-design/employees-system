@@ -62,14 +62,18 @@ export default {
                 'url': 'base-employee',
             }, {
                 'id': '2',
+                'menuName': '课程信息',
+                'url': 'base-course',
+            }, {
+                'id': '3',
                 'menuName': '员工培训计划',
                 'url': 'base-train-plan',
             }, {
-                'id': '3',
+                'id': '4',
                 'menuName': '员工培训记录',
                 'url': 'base-train-record',
             }, {
-                'id': '4',
+                'id': '5',
                 'menuName': '讲师信息',
                 'url': 'base-teacher',
             }]

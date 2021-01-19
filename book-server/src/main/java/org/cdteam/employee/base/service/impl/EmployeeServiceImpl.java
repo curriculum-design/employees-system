@@ -119,6 +119,14 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public List<EmployeeDTO> search(String q) {
+        LambdaQueryWrapper<EmployeeEntity> queryWrapper = Wrappers.lambdaQuery();
+        queryWrapper.like(EmployeeEntity::getRealName, q).or().like(EmployeeEntity::getDept, q);
+        List<EmployeeEntity> employeeEntities = mapper.selectList(queryWrapper);
+        return ListUtils.transferList(employeeEntities, EmployeeDTO.class);
+    }
+
+    @Override
     public Integer delete(Long id) {
         return mapper.deleteById(id);
     }

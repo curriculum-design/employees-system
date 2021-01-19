@@ -36,4 +36,6 @@ public interface EmployeeService {
     EmployeeDTO getByCode(String employeeCode);
 
     List<EmployeeDTO> selectByIds(Set<Long> ids);
+
+    List<EmployeeDTO> search(String q);
 }

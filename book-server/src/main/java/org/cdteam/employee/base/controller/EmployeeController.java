@@ -40,6 +40,12 @@ public class EmployeeController {
                 , Optional.ofNullable(endTime).map(Timestamp::toLocalDateTime).orElse(null));
     }
 
+    @ApiOperation("获取人员列表")
+    @GetMapping("/search")
+    public List<EmployeeDTO> search(String q) {
+        return employeeService.search(q);
+    }
+
     @ApiOperation("新增人员")
     @PostMapping("/upload-save")
     public Integer uploadSave(@RequestBody EmployeeUploadDTO employeeDTO) {

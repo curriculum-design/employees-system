@@ -43,3 +43,9 @@ views.push({
     name: 'base-teacher',
     component: require('../views/base-teacher')
 })
+
+views.push({
+    path: '/base-course',
+    name: 'base-course',
+    component: require('../views/base-course')
+})
