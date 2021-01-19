@@ -27,6 +27,18 @@ export default {
         })
         return reversal
     },
+    eqMatch(source, filterKey) {
+        if (source) {
+            if (filterKey) {
+                if (Array.isArray(source)) {
+                    return source.filter(s => s === filterKey).length > 0
+                }
+                return source === filterKey
+            }
+            return true
+        }
+        return false
+    },
     likeMatch(source, filterKey) {
         const isMatch = (s, k) => {
             const trimSource = (s + '').replace(/ /g, '').toLowerCase()

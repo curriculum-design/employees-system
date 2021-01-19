@@ -81,7 +81,13 @@ export default {
                 if (filters.length === 0) {
                     return true
                 }
-                return filters.filter(d => this.likeMatch(values, d)).pop()
+                // 只有最后一个才是like, 之前的都必须完全匹配
+                return filters.filter(d => d !== '').filter((d, index) => {
+                    if (index === filters.length - 1) {
+                        return this.likeMatch(values, d)
+                    }
+                    return this.eqMatch(values, d)
+                }).pop()
             })
         },
         total() {

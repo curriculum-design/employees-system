@@ -1,6 +1,8 @@
 <template lang="pug">
     ContentBody(title="")
-        LocalTable2.mini-table(:data="tableData" ref="multipleTable", :pagination="true" height="400")
+        el-input(v-model="deptName" placeholder="输入部门进行搜索")
+        LocalTable2.mini-table(:data="tableData" ref="multipleTable", :pagination="true" height="400" style="margin-top:20px")
+            el-table-column(type="selection" width="55")
             el-table-column(:prop="key", :key="key", :label="value.label || value", v-for="value, key in headerMapping", :show-overflow-tooltip="true", :width="value.width")
                 ColumnContent(slot-scope="{row}" :columnDefine="value", :row="row", :value-key="key" :renderContent="value.render")
         .form-action.margin-top-20
@@ -11,6 +13,7 @@
 <script>
 import CurdTableMix from '@/utils/mixins/curd-table-mix.js'
 import {mapGetters} from 'vuex'
+
 export default {
     props: ['show', 'value'],
     components: {},
@@ -18,7 +21,8 @@ export default {
     data() {
         return {
             form: {
-                related: 0
+                related: 0,
+                deptName: ''
             },
         }
     },
@@ -47,7 +51,8 @@ export default {
                 .then(_ => {
                     this.$emit('closeDialog')
                 })
-                .catch(_ => {})
+                .catch(_ => {
+                })
         },
     },
     computed: {
@@ -108,7 +113,8 @@ export default {
 .refEmployeeListShow .el-dialog__body {
     padding-top: 0;
 }
-.body{
+
+.body {
     padding: 10px 20px;
 }
 </style>

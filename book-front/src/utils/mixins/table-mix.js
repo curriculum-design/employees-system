@@ -44,6 +44,7 @@ export default {
         fieldParse,
         fieldParseByKey,
         likeMatch: CommonUtils.likeMatch,
+        eqMatch: CommonUtils.eqMatch,
         objectSpanMethod({ row, column, rowIndex, columnIndex }) {
             let option = this.headerMapping[Object.keys(this.headerMapping)[columnIndex]]
             if (columnIndex >= 0 && typeof option === 'object' && option['rowspan'] > 0) {
