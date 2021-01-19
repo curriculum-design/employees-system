@@ -22,7 +22,7 @@
                     el-input(v-model="form.teacherName")
                 el-form-item
                     el-button(type="primary", native-type="submit") 查询
-                    el-button(type="success" @click="handleEdit()") 新增
+                    el-button(type="success" @click="handleEditProxy()") 新增
                     ExportAllButton(:api="list", :filter="form", :total="total", :options="exportOptions")
                     ImportButtonWithDialog(@inputData="inputData", :saveApi="uploadSave", :options="importOptions", @complied="initLoad")
         el-table(:data="tableData" v-loading="loading" border)
@@ -30,11 +30,11 @@
                 ColumnContent(slot-scope="{row}" :columnDefine="value", :row="row", :value-key="key" :renderContent="value.render")
             el-table-column(label="操作" min-width="120")
                 template(slot-scope="scope")
-                    .icon-btn.el-icon-edit-outline(@click="handleEdit(scope.row.id)")
+                    .icon-btn.el-icon-edit-outline(@click="handleEditProxy(scope.row.id)")
                     .icon-btn.el-icon-delete.danger(type="danger", @click="deleteConfirm(scope.row.id)")
         template(slot="footer")
             el-pagination(:pageNum.sync="pageNum", :total="total", :pageSize="pageSize",@current-change="pageChangeHandler" @size-change="sizeChangeHandler" layout="total, sizes, prev, pager, next")
-        EditForm(:show.sync="editShow", v-model="editForm", @submit="submitHandler" v-loading.body="editLoading")
+        EditForm(:show.sync="editShow", v-if="editShow" :isAll="isAll" v-model="editForm", @submit="submitHandler" v-loading.body="editLoading")
 </template>
 
 <script>
@@ -47,6 +47,7 @@ export default {
     mixins: [CurdTableMix('$baseTrainRecordService')],
     data() {
         return {
+            isAll: false,
             editForm: {
                 id: '',
                 employeeId: '',
@@ -69,6 +70,10 @@ export default {
         }
     },
     methods: {
+        handleEditProxy(id, flag) {
+            this.isAll = !!flag
+            this.handleEdit(id)
+        },
         async uploadSave(data) {
             return this.api.postJson('upload-save', data)
         },
@@ -133,7 +138,14 @@ export default {
                     label: '课程编号'
                 },
                 courseName: {
-                    label: '课程名称'
+                    label: '课程名称',
+                    render: (h, {row, data}) => {
+                        const value = row.courseName
+                        const style = 'color:blue;cursor:pointer'
+                        return (<a underline={false} style={style} onClick={() => this.handleEditProxy(row.id, true)}>
+                            {value}
+                        </a>)
+                    }
                 },
                 trainStyle: {
                     label: '培训形式'
@@ -193,4 +205,7 @@ export default {
 }
 </script>
 <style lang="less" rel="stylesheet/less">
+.el-link {
+    font-size: inherit;
+}
 </style>

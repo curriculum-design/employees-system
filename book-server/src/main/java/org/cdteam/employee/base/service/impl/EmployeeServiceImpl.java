@@ -23,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * <p>
@@ -109,6 +110,12 @@ public class EmployeeServiceImpl implements EmployeeService {
     public EmployeeDTO getByCode(String employeeCode) {
         EmployeeEntity employeeEntity = mapper.selectOne(Wrappers.<EmployeeEntity>lambdaQuery().eq(EmployeeEntity::getEmployeeCode, employeeCode));
         return BeanCopyUtils.transferBean(employeeEntity, EmployeeDTO.class);
+    }
+
+    @Override
+    public List<EmployeeDTO> selectByIds(Set<Long> ids) {
+        List<EmployeeEntity> employeeEntities = mapper.selectList(Wrappers.<EmployeeEntity>lambdaQuery().in(EmployeeEntity::getId, ids));
+        return ListUtils.transferList(employeeEntities, EmployeeDTO.class);
     }
 
     @Override

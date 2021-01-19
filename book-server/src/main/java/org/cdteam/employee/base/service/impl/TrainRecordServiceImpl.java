@@ -7,9 +7,11 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.apache.commons.lang3.StringUtils;
 import org.cdteam.employee.base.dobject.TrainRecordUnionDO;
 import org.cdteam.employee.base.domain.TrainRecordEntity;
+import org.cdteam.employee.base.dto.EmployeeDTO;
 import org.cdteam.employee.base.dto.TrainRecordCreateDTO;
 import org.cdteam.employee.base.dto.TrainRecordDTO;
 import org.cdteam.employee.base.mapper.TrainRecordMapper;
+import org.cdteam.employee.base.service.EmployeeService;
 import org.cdteam.employee.base.service.TrainRecordService;
 import org.cdteam.spring.cloud.starter.common.utils.BeanCopyUtils;
 import org.cdteam.spring.cloud.starter.common.utils.ListUtils;
@@ -20,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * <p>
@@ -34,6 +37,9 @@ public class TrainRecordServiceImpl implements TrainRecordService {
 
     @Autowired
     private TrainRecordMapper mapper;
+
+    @Autowired
+    EmployeeService employeeService;
 
     @Override
     public Pagination<TrainRecordDTO> page(Integer pageSize, Integer pageNum
@@ -82,6 +88,16 @@ public class TrainRecordServiceImpl implements TrainRecordService {
     @Override
     public void deleteByCourseNo(String courseNo) {
         mapper.delete(Wrappers.<TrainRecordEntity>lambdaQuery().eq(TrainRecordEntity::getCourseNo, courseNo));
+    }
+
+    @Override
+    public List<EmployeeDTO> searchEmployeesByCourseNo(String courseNo) {
+        LambdaQueryWrapper<TrainRecordEntity> queryWrapper = Wrappers.<TrainRecordEntity>lambdaQuery()
+                .eq(TrainRecordEntity::getCourseNo, courseNo);
+        queryWrapper.select(TrainRecordEntity::getEmployeeId);
+        List<TrainRecordEntity> trainRecordEntities = mapper.selectList(queryWrapper);
+        Set<Long> ids = ListUtils.field(trainRecordEntities, TrainRecordEntity::getEmployeeId);
+        return employeeService.selectByIds(ids);
     }
 
     @Override

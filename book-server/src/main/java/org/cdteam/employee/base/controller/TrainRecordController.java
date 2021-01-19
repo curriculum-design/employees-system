@@ -3,6 +3,7 @@ package org.cdteam.employee.base.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.cdteam.employee.base.dto.*;
 import org.cdteam.employee.base.service.EmployeeService;
 import org.cdteam.employee.base.service.TeacherService;
@@ -19,6 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
@@ -98,11 +100,21 @@ public class TrainRecordController {
             trainRecordDTO.getRefEmployeeAssemblyList().forEach(d -> {
                 TrainRecordCreateDTO trainRecordCreateDTO = BeanCopyUtils.transferBean(trainRecordDTO, TrainRecordCreateDTO.class);
                 trainRecordCreateDTO.setEmployeeId(d.getId());
+                trainRecordCreateDTO.setId(null);
                 trainRecordService.save(trainRecordCreateDTO);
             });
             return trainRecordDTO.getRefEmployeeAssemblyList().size();
         }
         return trainRecordService.save(trainRecordDTO);
+    }
+
+    @ApiOperation("查找关联课程编号的所有用户")
+    @PostMapping("/search-employees-by-course-no")
+    public List<EmployeeDTO> searchEmployeesByCourseNo(String courseNo) {
+        if (StringUtils.isBlank(courseNo)) {
+            return Collections.emptyList();
+        }
+        return trainRecordService.searchEmployeesByCourseNo(courseNo);
     }
 
     @ApiOperation("修改培训计划")

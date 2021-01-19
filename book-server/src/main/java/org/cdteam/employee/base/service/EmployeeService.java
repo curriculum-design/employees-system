@@ -7,6 +7,7 @@ import org.cdteam.spring.cloud.starter.context.bean.Pagination;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -33,4 +34,6 @@ public interface EmployeeService {
     List<EmployeeDTO> all();
 
     EmployeeDTO getByCode(String employeeCode);
+
+    List<EmployeeDTO> selectByIds(Set<Long> ids);
 }

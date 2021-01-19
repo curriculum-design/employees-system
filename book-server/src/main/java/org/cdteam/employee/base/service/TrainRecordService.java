@@ -1,5 +1,6 @@
 package org.cdteam.employee.base.service;
 
+import org.cdteam.employee.base.dto.EmployeeDTO;
 import org.cdteam.employee.base.dto.TrainRecordCreateDTO;
 import org.cdteam.employee.base.dto.TrainRecordDTO;
 import org.cdteam.spring.cloud.starter.context.bean.Pagination;
@@ -34,4 +35,6 @@ public interface TrainRecordService {
     Boolean existCourseNo(String courseNo);
 
     void deleteByCourseNo(String courseNo);
+
+    List<EmployeeDTO> searchEmployeesByCourseNo(String courseNo);
 }
