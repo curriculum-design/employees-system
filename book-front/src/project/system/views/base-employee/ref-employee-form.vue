@@ -9,9 +9,9 @@
                 el-table-column(label="部门" prop="dept")
                 el-table-column(label="岗位" prop="jobName")
                 el-table-column(label="入职时间" width="100px")
-                    template(slot-scope="scope") {{$format.date(scope.row.joinTime, "yyyy-mm-dd")}}
-        div()
-            el-dialog(title="员工选择" :visible.sync="dialogVisible" width="700px" :close-on-click-modal="false", :append-to-body="true")
+                    template(slot-scope="scope") {{scope.row.joinTime ? $format.date(scope.row.joinTime, "yyyy-mm-dd") : ''}}
+        div
+            el-dialog(title="员工选择" :visible.sync="dialogVisible" width="700px" :close-on-click-modal="false", :append-to-body="true" @open="openDialog")
                 el-select(v-model="state" multiple filterable remote reserve-keyword placeholder="请输入关键词" :remote-method="querySearchAsync" @change="handleChange")
                     el-option(v-for="item in employees" :key="item.id" :label="item.realName" :value="item.id")
                 el-table(:data="tableData" border)
@@ -22,7 +22,7 @@
                     el-table-column(label="部门" prop="dept")
                     el-table-column(label="岗位" prop="jobName")
                     el-table-column(label="入职时间" width="100px")
-                        template(slot-scope="scope") {{$format.date(scope.row.joinTime, "yyyy-mm-dd")}}
+                        template(slot-scope="scope") {{scope.row.joinTime ? $format.date(scope.row.joinTime, "yyyy-mm-dd") : ''}}
                     el-table-column(width="60px")
                         template(slot-scope="scope")
                             .icon-btn.el-icon-delete.danger(type="danger", @click="tableData.splice(scope.$index, 1)")
@@ -49,20 +49,26 @@ export default {
             tableData: []
         }
     },
-    created() {
-        let employees = this.form.refEmployeeAssemblyList
-        if (employees) {
-            this.tableData = this.form.refEmployeeAssemblyList
-        }
-    },
     methods: {
+        openDialog() {
+            let employees = this.form.refEmployeeAssemblyList
+            if (employees) {
+                this.tableData = []
+                this.form.refEmployeeAssemblyList.forEach(v => {
+                    this.tableData.push(v)
+                })
+            }
+        },
         selectEmployee() {
             if (this.tableData.length === 0) {
                 this.$message.error('请先筛选你要选择的员工')
                 return
             }
             this.closeDialog()
-            this.form.refEmployeeAssemblyList = this.tableData
+            this.form.refEmployeeAssemblyList = []
+            this.tableData.forEach(v => {
+                this.form.refEmployeeAssemblyList.push(v)
+            })
         },
         handleChange(item) {
             if (item) {
